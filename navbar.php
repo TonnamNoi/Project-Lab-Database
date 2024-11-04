@@ -48,7 +48,10 @@ function is_active(...$file)
         }
         ?>
     </div>
-    <?php ?>
+    <!-- Tonnam หากมีการส่งคีเวิร์ดเข้ามา ให้นำไปเติมลงในอินพุตของฟอม -->
+    <?php       ?>
+
+
     <form action="search.php" class="form-inline mr-2 my-2">
         <div class="input-group input-group-sm">
             <input type="text" name="q" class="form-control" placeholder="Search..." value="<?= $q ?>">
@@ -64,3 +67,18 @@ function is_active(...$file)
         <span class="badge badge-pill badge-danger"></span>
     </a>
 </nav>
+
+<script>
+    function updateCart() {
+        $.ajax ({
+            url: 'ajax-update-cart.php',
+            success: (result) => {
+                if (result = 0) { result = ''; }
+                $('span.badge').text(result);
+            }
+        });
+    }
+    $(function() {
+        updateCart();
+    });
+</script>

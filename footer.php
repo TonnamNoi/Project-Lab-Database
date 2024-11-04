@@ -1,5 +1,5 @@
 <footer class="text-center fixed-bottom text-white bg-dark py-1">
-
+    LOl
     <?php
     @session_start();
     if (isset($_SESSION['admin'])) {
@@ -10,9 +10,11 @@
             <a href="admin-add-product.php" class="dropdown-item">Add</a>
             <a href="admin-order-list.php" class="dropdown-item">Order</a>
             <a href="admin-signout.php" class="dropdown-item">Logout</a>
-        </div>
-    </div>
+        </div> <!-- dropdown -->
+    </div> <!-- dropup -->
     HTML;
+    } else {
+        echo '[<a href="admin-signin.php" class="text-warning">admin</a>]';
     }
     ?>
 </footer>
