@@ -1,6 +1,33 @@
 <form method="post" class="m-auto pt-4">
     <!-- Tonnam Part ทำ Post Register -->
-    <?php ?>
+    <?php
+
+    // Check if the form has been submitted
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Collect data
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $password2 = $_POST['password2'];
+        $firstname = $_POST['firstname'];
+        $lastname = $_POST['lastname'];
+        $address = $_POST['address'];
+        $phone = $_POST['phone'];
+
+        $error = '';
+
+        // Check if passwords match
+        if ($password != $password2) {
+            $error = "Passwords do not match";
+        }
+
+        if (empty($error)) {
+            echo '<h3 class="text-center text-success">Registration Success</h3>';
+        } else {
+            echo '<h3 class="text-center text-danger">Registration Failed</h3>';
+            echo '<h3 class="text-center text-danger">' . $error . '</h3>';
+        }
+    }
+    ?>
 
     <h6 class="text-center text-info mb-4">Register</h6>
     <input type="email" name="email" placeholder="Email" class="form-control form-control-sm mb-3" required>

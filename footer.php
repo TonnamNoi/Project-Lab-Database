@@ -1,5 +1,5 @@
 <footer class="text-center fixed-bottom text-white bg-dark py-1">
-    LOl
+    
     <?php
     @session_start();
     if (isset($_SESSION['admin'])) {
@@ -18,5 +18,3 @@
     }
     ?>
 </footer>
-
-<!-- hello test -->

@@ -49,7 +49,7 @@ function is_active(...$file)
         ?>
     </div>
     <!-- Tonnam หากมีการส่งคีเวิร์ดเข้ามา ให้นำไปเติมลงในอินพุตของฟอม -->
-    <?php       ?>
+    <?php $q = isset($_GET['q']) ? htmlspecialchars($_GET['q']) : ''; ?>
 
 
     <form action="search.php" class="form-inline mr-2 my-2">
