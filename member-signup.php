@@ -7,14 +7,36 @@
         // Collect data
         $email = $_POST['email'];
         $password = $_POST['password'];
-        $password2 = $_POST['password2'];
         $firstname = $_POST['firstname'];
         $lastname = $_POST['lastname'];
         $address = $_POST['address'];
         $phone = $_POST['phone'];
+        // ลืมทำ Insert และเชื่อมเข้า table ใน Database นะ
 
-        $error = '';
 
+
+        
+        //
+
+        //ตรงนีต้องสร้างตัวแปลมาเพื่อเก็บค่าเพื่อเช็ค Server error ไหม
+        //error = '';
+        $error = $stmt->error;
+        
+        if ($error || $aff_rows != 1) {
+            $msg = 'Have some problem with registration<br>Probably email is wrong';
+            $contextual = 'alert-danger';
+            echo <<<HTML
+            <div class="alert $contextual alert-dismissable">
+                $msg
+                <button class="close" data-dismiss="alert" aria-hidden="true">&time;</button>
+            </div>
+            HTML;
+        } else {
+            $_SESSION['member_id'] = $insert_id;
+            $_SESSION['member_name'] = $name;
+            echo '<script>location="member-signin.php"</script>';
+            exit;
+        }
         // Check if passwords match
         if ($password != $password2) {
             $error = "Passwords do not match";

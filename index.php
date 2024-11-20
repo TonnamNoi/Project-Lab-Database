@@ -6,6 +6,13 @@
 <body>
     <?php require 'navbar.php';?>
 
+    <div class="card-deck mx-4 mt-5 justify-content-center">
+    <?php
+    // require 'lib/pagination-v2.class.php';
+    // $page = new PaginationV2();
+    ?>
+    </div>
+
     <?php require 'footer.php';?>
 </body>
 </html>

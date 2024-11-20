@@ -15,11 +15,34 @@
     }
 
     // Tonnam ถ้าเป็นการโพสข้อมูลกลับขึ้นมา
-     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']) && isset($_POST['pswd'])) // make sure login and pwd is filled 
+     if ($_SERVER['REQUEST_METHOD'] === 'POST') // make sure login and pwd is filled 
         {
             // info retrieved
             $email = $_POST['email'];
             $password = $_POST['pswd'];
+            $mysqli = new mysqli('localhost','root','','pmdb_simple_store');
+            $sql = 'SELECT * FROM member WHERE email = ? AND password = ?';
+            $stmt = $mysqli->stmt_init();
+            $stmt->prepare($sql);
+            $stmt->bind_param('ss', $email, $pswd);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $num_rows = $result->num_rows;
+            if ($num_rows == 1) {
+                $data = $result->fetch_object();
+                $_SESSION['member_id'] = $data->id;
+                $_SESSION['member_name'] = $data->firstname;
+                $mysqli->close();
+                echo '<script>location="member-sighin.php"</script>';
+                exit();
+            } else if ($num_rows == 0) {
+                echo <<<HTML
+                <div class="alert alert-danger mb-4" role="alert">
+                    Email or Password is wrong
+                    <button class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                </div>
+                HTML;
+            }
         }
     ?>
 
