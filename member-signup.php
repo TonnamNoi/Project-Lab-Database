@@ -23,7 +23,7 @@
         }
 
         // Database connection
-        $mysqli = new mysqli('localhost', 'root', '', 'your_database_name'); // Modify your DB name
+        $mysqli = new mysqli('localhost', 'root', 'root', 'project1');
 
         // Check connection
         if ($mysqli->connect_error) {
