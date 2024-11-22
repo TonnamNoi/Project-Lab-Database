@@ -15,35 +15,35 @@
     }
 
     // Tonnam ถ้าเป็นการโพสข้อมูลกลับขึ้นมา
-     if ($_SERVER['REQUEST_METHOD'] === 'POST') // make sure login and pwd is filled 
-        {
-            // info retrieved
-            $email = $_POST['email'];
-            $password = $_POST['pswd'];
-            $mysqli = new mysqli('localhost','root','','pmdb_simple_store');
-            $sql = 'SELECT * FROM member WHERE email = ? AND password = ?';
-            $stmt = $mysqli->stmt_init();
-            $stmt->prepare($sql);
-            $stmt->bind_param('ss', $email, $pswd);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $num_rows = $result->num_rows;
-            if ($num_rows == 1) {
-                $data = $result->fetch_object();
-                $_SESSION['member_id'] = $data->id;
-                $_SESSION['member_name'] = $data->firstname;
-                $mysqli->close();
-                echo '<script>location="member-sighin.php"</script>';
-                exit();
-            } else if ($num_rows == 0) {
-                echo <<<HTML
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') // make sure login and pwd is filled 
+    {
+        // info retrieved
+        $email = $_POST['email'];
+        $password = $_POST['pswd'];
+        $mysqli = new mysqli('localhost', 'root', '', 'pmdb_simple_store');
+        $sql = 'SELECT * FROM member WHERE email = ? AND password = ?';
+        $stmt = $mysqli->stmt_init();
+        $stmt->prepare($sql);
+        $stmt->bind_param('ss', $email, $pswd);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $num_rows = $result->num_rows;
+        if ($num_rows == 1) {
+            $data = $result->fetch_object();
+            $_SESSION['member_id'] = $data->id;
+            $_SESSION['member_name'] = $data->firstname;
+            $mysqli->close();
+            echo '<script>location="member-sighin.php"</script>';
+            exit();
+        } else if ($num_rows == 0) {
+            echo <<<HTML
                 <div class="alert alert-danger mb-4" role="alert">
                     Email or Password is wrong
                     <button class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                 </div>
                 HTML;
-            }
         }
+    }
     ?>
 
     <h6 class="text-center text-info mb-4">Sign In</h6>
@@ -51,17 +51,4 @@
     <input type="password" name="pswd" placeholder="Password" class="form-control form-control-sm mb-4" required>
     <button type="submit" class="btn btn-sm btn-primary d-block mx-auto mb-4 w-50">Login</button>
     <a href="member-signup.php" class="btn btn-sm btn-info d-block mx-auto w-50">Register</a>
-</form>
-
-<form method="post" class="m-auto pt-4">
-    <!-- Tonnam Post Login and password of admin by check by "admin" is id and password is "12345" -->
-    <?php
-    
-    if ($email === 'admin' && $password === '12345') { 
-        echo '<h6 class="text-center text-success">Welcome, Admin</h6>';
-    } else {
-        echo '<h6 class="text-center text-danger">Access Denied</h6>';
-    }
-
-    ?>
 </form>

@@ -6,65 +6,39 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Collect data
         $email = $_POST['email'];
-        $password = $_POST['password'];
-        $firstname = $_POST['firstname'];
-        $lastname = $_POST['lastname'];
+        $pswd = $_POST['password'];
+        $fname = $_POST['firstname'];
+        $lname = $_POST['lastname'];
         $address = $_POST['address'];
         $phone = $_POST['phone'];
-
-        // Check if passwords match
-        if ($password != $password2) {
-            $error = "Passwords do not match";
-        }
-
-        if (empty($error)) {
-            // Hash the password for security
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        }
-
         // Database connection
         $mysqli = new mysqli('localhost', 'root', 'root', 'project1');
-
-        // Check connection
-        if ($mysqli->connect_error) {
-            die("Connection failed: " . $mysqli->connect_error);
-        }
-
-        // Prepare the SQL INSERT statement
-        $stmt = $mysqli->prepare("INSERT INTO users (email, password, firstname, lastname, address, phone) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssss", $email, $hashed_password, $firstname, $lastname, $address, $phone);
-        
-        $error = $stmt->error;
-        
-        // Execute the statement
-        if ($stmt->execute()) {
-            // Registration successful
-            $insert_id = $stmt->insert_id; // Get the inserted record's ID
-            $_SESSION['member_id'] = $insert_id;
-            $_SESSION['member_name'] = $firstname . ' ' . $lastname;
-
-            // Redirect to login or another page after successful registration
-            echo '<script>location="member-signin.php"</script>';
-            exit;
-        } else {
-            // Error occurred during registration
-            $msg = 'There was an issue with registration, please try again.';
-            $contextual = 'alert-danger';
-            echo <<<HTML
-            <div class="alert $contextual alert-dismissable">
-                $msg
-                <button class="close" data-dismiss="alert" aria-hidden="true">&time;</button>
-            </div>
-            HTML;
-        }
-
-        // Close the statement and connection
+        $sql = 'INSERT INTO member VALUES (?, ?, ?, ?, ?, ?, ?)';
+        $stmt = $mysqli->stmt_init();
+        $stmt->prepare($sql);
+        $p = [0, $email, $pswd, $fname, $lname, $address, $phone];
+        $stmt->bind_param('issssss', ...$p);
+        $stmt->execute();
+        $err = $stmt->error;
+        $aff_rows = $stmt->affected_rows;
+        $insert_id = $mysqli->insert_id;
         $stmt->close();
         $mysqli->close();
-    } else {
-        // Display error message if passwords do not match
-        echo '<h3 class="text-center text-danger">Registration Failed</h3>';
-        echo '<h3 class="text-center text-danger">' . $error . '</h3>';
+        if ($err || $aff_rows != 1) {
+            $msg = 'An error occurred while registering for membership.<br>The specified email address is already in use';
+            $contextual = 'alert-danger';
+            echo <<<HTML
+            <div class="alert $contextual alert-dismissible">
+                $msg
+                <button class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            </div>
+            HTML;
+        } else {
+            $_SESSION['member_id'] = $insert_id;
+            $_SESSION['member_name'] = $name;
+            echo '<script>location="member-signin.php"</script>';
+            exit;
+        }
     }
     ?>
 
