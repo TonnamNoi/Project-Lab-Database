@@ -1,3 +1,5 @@
+<?php require 'index.php' ?>
+
 <div class="main-container mx-auto px-3 pt-4">
     <?php
     $order_id = $_GET['id'] ?? 0;

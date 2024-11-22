@@ -43,7 +43,7 @@ function is_active(...$file)
                 <div class="dropdown d-inline">
                     <a href="#" class="btn btn-sm btn-info dropdown-toggle" data-toggle="dropdown">$name</a>
                     <div class="dropdown-menu mt-2 bg-light">
-                        <a class="dropdown-menu mt-2 bg-light" href="cart.php"></a>
+                        <a class="dropdown-item w-auto" href="cart.php">Check cart</a>
                         <a class="dropdown-item w-auto" href="member-order-list.php">History...</a>
                     </div>
                 </div>

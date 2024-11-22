@@ -1,3 +1,5 @@
+<?php require 'index.php' ?>
+
 <form method="post" enctype="multipart/form-data" class="mt-5">
     <?php
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {

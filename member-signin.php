@@ -1,3 +1,5 @@
+<?php require 'index.php' ?>
+
 <form method="post" class="m-auto pt-5">
     <!--Tonnam ถ้าได้ล็อคอินเข้าสู่ระบบ -->
     <?php
@@ -20,7 +22,7 @@
         // info retrieved
         $email = $_POST['email'];
         $password = $_POST['pswd'];
-        $mysqli = new mysqli('localhost', 'root', '', 'pmdb_simple_store');
+        $mysqli = new mysqli('localhost', 'root', '', 'project1');
         $sql = 'SELECT * FROM member WHERE email = ? AND password = ?';
         $stmt = $mysqli->stmt_init();
         $stmt->prepare($sql);

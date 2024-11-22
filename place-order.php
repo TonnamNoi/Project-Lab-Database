@@ -1,3 +1,5 @@
+<?php require 'index.php' ?>
+
 <?php
 
 $mid = $_SESSION['member_id'];

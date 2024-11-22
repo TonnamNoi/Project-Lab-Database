@@ -1,3 +1,4 @@
+<?php require 'index.php' ?>
 <script>
     $(function() {
         $("#unite0gallery").unitegallery({

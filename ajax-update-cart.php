@@ -1,3 +1,5 @@
+<?php require 'index.php' ?>
+
 <?php
 
 @session_start();

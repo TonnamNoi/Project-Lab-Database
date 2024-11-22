@@ -1,3 +1,5 @@
+<?php require 'index.php' ?>
+
 <?php 
 
 $mysqli = new mysqli('localhost','root','','project1');

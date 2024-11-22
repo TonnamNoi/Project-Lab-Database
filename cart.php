@@ -1,3 +1,5 @@
+<?php require 'index.php' ?>
+
 <script>
     $(function() {
         $('a.delete').click(function() {

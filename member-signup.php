@@ -1,3 +1,5 @@
+<?php require 'index.php' ?>
+
 <form method="post" class="m-auto pt-4">
     <!-- Tonnam Part ทำ Post Register -->
     <?php
