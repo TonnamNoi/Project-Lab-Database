@@ -11,19 +11,44 @@
         $lastname = $_POST['lastname'];
         $address = $_POST['address'];
         $phone = $_POST['phone'];
-        // ลืมทำ Insert และเชื่อมเข้า table ใน Database นะ
 
+        // Check if passwords match
+        if ($password != $password2) {
+            $error = "Passwords do not match";
+        }
 
+        if (empty($error)) {
+            // Hash the password for security
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        }
 
+        // Database connection
+        $mysqli = new mysqli('localhost', 'root', 'root', 'project1');
+
+        // Check connection
+        if ($mysqli->connect_error) {
+            die("Connection failed: " . $mysqli->connect_error);
+        }
+
+        // Prepare the SQL INSERT statement
+        $stmt = $mysqli->prepare("INSERT INTO users (email, password, firstname, lastname, address, phone) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssss", $email, $hashed_password, $firstname, $lastname, $address, $phone);
         
-        //
-
-        //ตรงนีต้องสร้างตัวแปลมาเพื่อเก็บค่าเพื่อเช็ค Server error ไหม
-        //error = '';
         $error = $stmt->error;
         
-        if ($error || $aff_rows != 1) {
-            $msg = 'Have some problem with registration<br>Probably email is wrong';
+        // Execute the statement
+        if ($stmt->execute()) {
+            // Registration successful
+            $insert_id = $stmt->insert_id; // Get the inserted record's ID
+            $_SESSION['member_id'] = $insert_id;
+            $_SESSION['member_name'] = $firstname . ' ' . $lastname;
+
+            // Redirect to login or another page after successful registration
+            echo '<script>location="member-signin.php"</script>';
+            exit;
+        } else {
+            // Error occurred during registration
+            $msg = 'There was an issue with registration, please try again.';
             $contextual = 'alert-danger';
             echo <<<HTML
             <div class="alert $contextual alert-dismissable">
@@ -31,23 +56,15 @@
                 <button class="close" data-dismiss="alert" aria-hidden="true">&time;</button>
             </div>
             HTML;
-        } else {
-            $_SESSION['member_id'] = $insert_id;
-            $_SESSION['member_name'] = $name;
-            echo '<script>location="member-signin.php"</script>';
-            exit;
-        }
-        // Check if passwords match
-        if ($password != $password2) {
-            $error = "Passwords do not match";
         }
 
-        if (empty($error)) {
-            echo '<h3 class="text-center text-success">Registration Success</h3>';
-        } else {
-            echo '<h3 class="text-center text-danger">Registration Failed</h3>';
-            echo '<h3 class="text-center text-danger">' . $error . '</h3>';
-        }
+        // Close the statement and connection
+        $stmt->close();
+        $mysqli->close();
+    } else {
+        // Display error message if passwords do not match
+        echo '<h3 class="text-center text-danger">Registration Failed</h3>';
+        echo '<h3 class="text-center text-danger">' . $error . '</h3>';
     }
     ?>
 
