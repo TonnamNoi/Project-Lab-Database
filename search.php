@@ -1,4 +1,3 @@
-<?php @session_start(); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,17 +30,46 @@
       </script>
 </head>
 <body class="px-3 pt-5">
-<?php require 'navbar.php'; ?> 
-    
-<div id="main-container" class="mx-auto">
-<div class="card-deck mx-4 mt-5 justify-content-center">
+   
+<?php             
+//ต้องคีย์เวิร์ดไปแสดงผลในช่องค้นหาบน navbar
+//ดังนั้นต้องอ่านคีย์เวิร์ดก่อนแสดง navbar
+$q = '';
+if (isset($_GET['q'])) {
+      $q = $_GET['q'];
+}
+
+include 'navbar.php';   
+?>
+<div id="main-container" class="mx-auto pt-5">
+
 <?php
 require 'lib/pagination-v2.class.php';
 $page = new PaginationV2();
 
 $mysqli = new mysqli('localhost', 'root', 'root', 'project1');
-$sql = 'SELECT * FROM product';
-$result = $page->query($mysqli, $sql, 10);
+$sql = "SELECT * FROM product
+            WHERE name LIKE '%$q%' OR detail LIKE '%$q%' 
+            ORDER BY id DESC";
+
+$result = $page->query($mysqli, $sql, 20);
+if ($mysqli->error || $result->num_rows == 0) {
+      echo '<h6 class="text-center text-danger">ไม่พบข้อมูล</h6>';
+      $mysqli->close();
+      exit ('</div></body></html>');
+}
+
+$start_row = $page->start_row();
+$stop_row = $page->stop_row();
+$total_rows = $page->total_rows();
+
+echo <<<HTML
+<p class="text-info text-center mb-3">
+ผลการค้นหาลำดับที่:  $start_row - $stop_row
+จากทั้งหมด: $total_rows</p>
+HTML;
+
+echo '<div class="card-deck mx-4 mt-5 justify-content-center">';
 
 while ($p = $result->fetch_object()) {
       $n = $p->name;
@@ -66,18 +94,18 @@ while ($p = $result->fetch_object()) {
       </div>
       HTML;
 }
-
 $mysqli->close();
+
+echo '</div>';  //end card
 ?>
-</div>  <!-- card -->
+
 <br>
-
 <?php 
- if ($page->total_pages() > 1) {
-      $page->echo_pagenums_bootstrap(); 
- }
+if ($page->total_pages() > 1) {
+      $page->echo_pagenums_bootstrap();  
+}
 
-include 'recently-viewed.php';
+include 'recently-viewed.php'; 
 ?>
 
 </div>  <!-- main-container -->

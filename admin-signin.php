@@ -1,39 +1,61 @@
-<?php require 'index.php' ?>
+<?php @session_start(); ?>
+<!DOCTYPE html>
+<html>
+<head>
+      <?php require 'head.php'; ?>
+      <style>
+            html, body {
+                  width: 100%;
+                  height: 100%;
+                  background: azure;
+            }
+          
+            #main-form {
+                  min-width: 270px;
+                  max-width: 350px;
+            }
+      </style>
+</head>
+<body class="d-flex pt-5 px-3">
+<?php require 'navbar.php'; ?> 
 
-<form method="post" class="m-auto pt-4">
-    <?php
-    //Tonnam ตรงนี้ POST ตัว username กับ password และเช็คด้วยว่า username เท่ากับ admin กับ password เท่ากับ 12345 รึเปล่า  
-    
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $login = $_POST['login'];
-        $pswd = $_POST['pswd'];
-        if ($login ='admin' && $pswd =='12345') {
+<form id="main-form" method="post" class="m-auto pt-4">
+<?php     
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $login = $_POST['login'];
+      $pswd = $_POST['pswd'];
+
+      if ($login = 'admin' && $pswd == '12345') {
             $_SESSION['admin'] = '1';
-        } else {
-            echo <<<HTML
+      } else  {
+             echo <<<HTML
             <div class="alert alert-danger mb-4" role="alert">
-                Username or Password is not correct
-                <button class="close" data-dismiss="alert">&times;</button>
+                  ชื่อหรือรหัสผ่านไม่ถูกต้อง
+                  <button class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             </div>
-            HTML;
-        }
-    }
+            HTML; 
+      }
+}
 
-    if (!isset($_SESSION['admin'])) {
-        echo <<<HTML
-        <div class="container">
-            <h6 class="text-info text-center mt-5 mb-4">Welcome Admin</h6>
-            <input type="text" name="login" placeholder="Username" class="form-control form-control-sm mb-3">
-            <input type="password" name="pswd" placeholder="Password" class="form-control form-control-sm mb-4">
-            <button class="btn btn-primary btn-sm d-block m-auto px-5">Submit</button>
-        </div>
-        HTML;
-    } else { // if able to login show the option for admin
-        echo <<<HTML
-        <h6 class="text-info text-center mt-5 mb-3">for Admin...</h6>
-        <a href="admin-add-product.php" class="btn btn-primary btn-sm d-block mx-auto mb-4 px-5">Add Product</a>
-        <a href="admin-signout.php" class="btn btn-danger btn-sm d-block mx-auto px-5">Sign out</a>
-        HTML;
-    }
-    ?>
+if (!isset($_SESSION['admin'])) {
+     echo <<<HTML
+      <h6 class="text-info text-center mb-4">ชื่อและรหัสผ่านของผู้ดูแลเว็บไซต์</h6>
+      <input type="text" name="login" placeholder="ชื่อ" class="form-control form-control-sm mb-3">
+      <input type="password" name="pswd" placeholder="รหัสผ่าน"  class="form-control form-control-sm mb-4">   
+      <button class="btn btn-primary btn-sm d-block m-auto px-5">ตกลง</button>
+     HTML;
+} else {
+      echo <<<HTML
+      <h6 class="text-success text-center mb-3">สำหรับผู้ดูแลเว็บไซต์</h6>
+      <a href="admin-order-list.php" class="btn btn-success btn-sm mb-2 d-block mx-auto px-5">ตรวจสอบรายการสั่งซื้อ</a>
+      <a href="admin-add-product.php" class="btn btn-info btn-sm mb-5 d-block mx-auto px-5">เพิ่มรายการสินค้า</a>
+      <a href="admin-signout.php" class="btn btn-danger btn-sm mb-3 d-block mx-auto px-5">ออกจากระบบ</a> 
+      HTML;
+}
+?>      
+<br><br><br>
 </form>
+    
+<?php require 'footer.php'; ?> 
+</body>
+</html>
