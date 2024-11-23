@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $email = $_POST['email'];
       $pswd = $_POST['pswd'];
 
-      $mysqli = new mysqli('localhost', 'root', '', 'pmdb_simple_store');
+      $mysqli = new mysqli('localhost', 'root', 'root', 'project1');
       $sql = 'SELECT * FROM member 
                   WHERE email = ? AND password = ?';
 
