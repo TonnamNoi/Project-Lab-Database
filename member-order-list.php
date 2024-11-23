@@ -2,8 +2,8 @@
     <h6 class="text-info mb-4 text-center">Purchase history</h6>
 
     <?php
-    // require 'lib/pagination-v2.class.php';
-    // $page = new PaginationV2();
+    require 'lib/pagination-v2.class.php';
+    $page = new PaginationV2();
     $mid = $_SESSION['member_id'];
     $mysqli = new mysqli('localhost', 'root', 'root', 'project1');
 
@@ -75,7 +75,7 @@ HTML;
     if ($page->total_pages() > 1) {
         $page->echo_pagenums_bootstrap();
     }
-    // end_page;
+    end_page:
     $mysqli->close();
     ?>
 </div>
