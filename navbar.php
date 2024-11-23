@@ -1,4 +1,6 @@
 <?php
+/* ฟังก์ชันที่ใช้ตรวจสอบว่า ไฟล์ของเพจปัจจุบันตรงกับเมนูใด 
+* เพื่อจะทำให้เมนูของเพจปัจจุบันอยู่ในสถานะ active (ถูกเลือก) */
 function is_active(...$file)
 {
     $path = $_SERVER['PHP_SELF'];
@@ -27,8 +29,10 @@ function is_active(...$file)
         <ul class="navbar-nav">
             <li class="nav-item<?= is_active('/index.php') ?>">
                 <a class="nav-link" href="index.php">First Page</a>
-                ...
             </li>
+            <li class="nav-item"><a class="nav-link" href="#">Order & Delivery</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">How to payment</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
         </ul>
     </div>
 
@@ -75,7 +79,7 @@ function is_active(...$file)
         $.ajax({
             url: 'ajax-update-cart.php',
             success: (result) => {
-                if (result = 0) {
+                if (result == 0) {
                     result = '';
                 }
                 $('span.badge').text(result);

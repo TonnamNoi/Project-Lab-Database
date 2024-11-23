@@ -21,10 +21,12 @@
 
     if (!isset($_SESSION['admin'])) {
         echo <<<HTML
-        <h6 class="text-info text-center mt-5 mb-4">Welcome Admin</h6>
-        <input type="text" name="login" placeholder="Username" class="form-control form-control-sm mb-3">
-        <input type="password" name="pswd" placeholder="Password" class="form-control form-control-sm mb-4">
-        <button class="btn btn-primary btn-sm d-block m-auto px-5">Submit</button>
+        <div class="container">
+            <h6 class="text-info text-center mt-5 mb-4">Welcome Admin</h6>
+            <input type="text" name="login" placeholder="Username" class="form-control form-control-sm mb-3">
+            <input type="password" name="pswd" placeholder="Password" class="form-control form-control-sm mb-4">
+            <button class="btn btn-primary btn-sm d-block m-auto px-5">Submit</button>
+        </div>
         HTML;
     } else { // if able to login show the option for admin
         echo <<<HTML

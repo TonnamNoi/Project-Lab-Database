@@ -75,7 +75,7 @@ HTML;
     if ($page->total_pages() > 1) {
         $page->echo_pagenums_bootstrap();
     }
-    // end_page;
+    end_page:
     $mysqli->close();
     ?>
 </div>
