@@ -46,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $pswd = $_POST['password'];
       $fname = $_POST['firstname'];
       $lname = $_POST['lastname'];
-
       $address = $_POST['address'];
       $phone = $_POST['phone'];
 

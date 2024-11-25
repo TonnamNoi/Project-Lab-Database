@@ -44,17 +44,7 @@ if (!isset($_SESSION['member_id'])) {
             <hr>
             <h6 class="mb-5 text-center text-info">วิธีชำระเงินและที่อยู่ในการจัดส่งสินค้า</h6>
 
-            <span class="mt-4 mb-2 d-block text-success">วิธีการชำระเงิน</span>
-            <div class="custom-control custom-radio">
-                  <input type="radio" class="custom-control-input"
-                        id="radio1" name="payment" value="cod" checked>
-                  <label class="custom-control-label" for="radio1">ชำระเงินปลายทาง</label>
-            </div>
-            <div class="custom-control custom-radio">
-                  <input type="radio" class="custom-control-input"
-                        id="radio2" name="payment" value="bank_transfer">
-                  <label class="custom-control-label" for="radio2">โอนผ่านธนาคาร/ATM</label>
-            </div>
+            
             <?php
             //อ่านข้อมูลส่วนตัวของลูกค้า ซึ่งกำหนดไว้ตอนสมัครสมาชิก  
             //มาแสดงบนฟอร์ม เผื่อกรณีที่ต้องการเปลี่ยนแปลงที่อยู่ในการจัดส่ง
@@ -72,10 +62,24 @@ if (!isset($_SESSION['member_id'])) {
             <textarea name="address" rows="3" class="form-control form-control-sm mb-2" placeholder="ที่อยู่" required><?= $m->address ?></textarea>
             <input type="text" name="phone" placeholder="โทร" class="form-control form-control-sm" value="<?= $m->phone ?>" required>
 
+            <span class="mt-4 mb-2 d-block text-success">วิธีการชำระเงิน</span>
+            <div class="custom-control custom-radio">
+                  <input type="radio" class="custom-control-input"
+                        id="radio1" name="payment" value="cod" checked>
+                  <label class="custom-control-label" for="radio1">ชำระเงินปลายทาง</label>
+            </div>
+            <div class="custom-control custom-radio">
+                  <input type="radio" class="custom-control-input"
+                        id="radio2" name="payment" value="bank_transfer">
+                  <label class="custom-control-label" for="radio2">โอนผ่านธนาคาร/ATM</label>
+            </div>
+
             <div class="text-center mt-4">
                   <a href="index.php" class="btn btn-danger btn-sm px-4 mr-5">ยกเลิก</a>
                   <button type="button" class="placeorder btn btn-primary btn-sm px-4">สั่งซื้อสินค้า</button>
             </div>
+
+            
             <br><br><br><br>
       </form>
 
