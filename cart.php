@@ -52,7 +52,7 @@ if (!isset($_SESSION['member_id'])) {
 <form method="post" id="form-cart">   
 <?php      
 $mid = $_SESSION['member_id'];
-$mysqli = new mysqli('localhost', 'root', '', 'pmdb_simple_store');
+$mysqli = new mysqli('localhost', 'root', 'root', 'project1');
 //ถ้าส่งค่า id สำหรับการลบขึ้นมา ก็นำไปกำหนดเงื่อนไขเพื่อลบข้อมูลออกจากตาราง cart
 if (isset($_POST['delete_id'])) {
       $pid = $_POST['delete_id'];

@@ -4,7 +4,7 @@
 <head>
       <?php require 'head.php'; ?>
       <link href="js/unite-gallery/css/unite-gallery.css" rel="stylesheet">
-      <link href="js/unite-gallery/themes/compact/ug-theme-compact.css" rel="stylesheet">
+      <!-- <link href="js/unite-gallery/themes/compact/ug-theme-compact.css" rel="stylesheet"> -->
       <style>            
             div#main-container {
                 max-width: 800px;
@@ -33,6 +33,7 @@
             //แล้วส่งผ่าน AJAX ไปยังเพจ ajax-add-cart.php 
             $('#add-cart').click(function() {
                   var id = $(this).attr('data-id');
+                  // alert('The inputed value is ' + (id ? id : 'empty'));
                   $.ajax({
                         url: 'ajax-add-cart.php', 
                         data: {'pro_id': id}, 
@@ -41,9 +42,9 @@
                         //ในระหว่างที่ส่ง ให้ปิดทีบพื้นหลังด้วย LoadingOverlay
                         beforeSend: () => {
                                 $.LoadingOverlay('show', {
-                                        image: 'clock-loading.gif',
+                                        image: 'loading.png',
                                         background: 'rgba(200, 200, 200, 0.6)',
-                                        text: 'กำลังดำเนินการ...',
+                                        text: 'loading......',
                                         textResizeFactor: 0.15
                                 });
                         },
