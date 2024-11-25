@@ -21,21 +21,12 @@ if (isset($_POST['pro_id'])) {
       $stmt->execute();
       $aff_row = $stmt->affected_rows;
       if ($stmt->error || $aff_row == 0) {
-<<<<<<< HEAD
             $msg = 'Failed to add product to cart';
             $contextual = 'alert-danger'; 
       } else {
             $msg = 'Product successfully added to cart';
-            $contextual = 'alert-success';               
-      }           
-=======
-            $msg = 'เกิดข้อผิดพลาดในการหยิบสินค้าใส่รถเข็น';
-            $contextual = 'alert-danger';
-      } else {
-            $msg = 'หยิบสินค้าใส่รถเข็นเรียบร้อยแล้ว';
             $contextual = 'alert-success';
       }
->>>>>>> 7f53659281dfaf30e0b849769e4ba498ca0732a8
 }
 
 $stmt->close();
@@ -48,3 +39,5 @@ echo <<<HTML
       <button class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 </div>             
 HTML;
+?>
+

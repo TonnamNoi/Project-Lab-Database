@@ -88,7 +88,7 @@ while ($order = $result->fetch_object()) {
             $dvr = '<i class="far fa-check-circle"></i>';
       }
 
-      $a = "<a href=\"member-order-detail.php?id=$order_id\" target=\"_blank\">รายละเอียดและแจ้งโอนเงิน</a>";
+      $a = "<a href=\"member-order-detail.php?id=$order_id\" target=\"_blank\">Payment details and notification</a>";
       echo "<tr class=\"text-center\"><td>$d</td><td>$total</td><td>$p</td><td>$dvr</td><td>$a</td></tr>";
 }
 echo '</tbody></table><br><br>';
