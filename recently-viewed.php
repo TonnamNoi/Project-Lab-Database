@@ -4,7 +4,7 @@ if (isset($_SESSION['recently_viewed'])) {
       echo <<<HTML
       <hr>
       <div class="mt-4 mb-4 text-center">
-            <h6 class="text-secondary">สินค้าที่ดูล่าสุด</h6>
+            <h6 class="text-secondary">Recently viewed products</h6>
             <div class="d-flex mt-3 justify-content-center">
       HTML;
 

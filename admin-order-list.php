@@ -28,7 +28,7 @@ if (!isset($_SESSION['admin'])) {
 <?php require 'navbar.php'; ?> 
     
 <div class="main-container mx-auto px-2 pt-4">
-<h6 class="text-info mb-4 text-center">รายการสั่งซื้อจากล่าสุด</h6>
+<h6 class="text-info mb-4 text-center">Recent order list</h6>
 <?php      
 require 'lib/pagination-v2.class.php';
 $page = new PaginationV2();
@@ -38,7 +38,7 @@ $sql = "SELECT * FROM orders ORDER BY id DESC";
 $result = $page->query($mysqli, $sql);
 
 if ($mysqli->error || $result->num_rows == 0) {
-      echo '<div class="text-center text-danger lead">ไม่พบข้อมูล</div>';
+      echo '<div class="text-center text-danger lead">Data not found</div>';
       goto end_page;
 }
 
@@ -46,7 +46,7 @@ echo <<<HTML
 <table class="table table-striped table-sm table-bordered mt-4 m-auto">
 <thead class="thead-dark">
 <tr class="text-center">
-      <th>วันที่</th><th>ผู้ซื้อ</th><th>มูลค่ารวม</th><th>การชำระเงิน</th><th>การจัดส่ง</th><th></th>
+      <th>Date</th><th>Buyer</th><th>Total value</th><th>Payment methods</th><th>Shipping</th><th></th>
 </tr>
 </thead>
 <tbody>
@@ -70,14 +70,14 @@ while ($order = $result->fetch_object()) {
       
       $p = '';
       if ($order->pay_status == 'paid') {
-            $p = 'ชำระแล้ว';
+            $p = 'Paid';
       } else if ($order->pay_status == 'pending') {
             if ($order->payment == 'cod') {
-                  $p = 'ชำระปลายทาง';
+                  $p = 'Cash on delivery(COD)';
             } else if (!empty($order->bank_transfer)) {
-                  $p = 'รอตรวจสอบ';
+                  $p = 'Pending verification';
             } else {
-                  $p = 'ค้างชำระ';
+                  $p = 'Unpaid';
             }
       }
 
@@ -86,7 +86,7 @@ while ($order = $result->fetch_object()) {
             $dvr = '<i class="far fa-check-circle text-success"></i>';
       }
 
-      $a = "<a href=\"admin-order-detail.php?id=$order_id\" target=\"_blank\">รายละเอียด</a>";
+      $a = "<a href=\"admin-order-detail.php?id=$order_id\" target=\"_blank\">Detaila</a>";
 
       echo <<<ROW
       <tr class="text-center">

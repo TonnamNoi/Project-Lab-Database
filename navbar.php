@@ -1,8 +1,7 @@
 <?php
-/* ฟังก์ชันที่ใช้ตรวจสอบว่า ไฟล์ของเพจปัจจุบันตรงกับเมนูใด 
-* เพื่อจะทำให้เมนูของเพจปัจจุบันอยู่ในสถานะ active (ถูกเลือก) */
+// function to check which menu corresponds to the current page, highlighting it as active (selected).
 function is_active(...$file) {
-      $path = $_SERVER['PHP_SELF'];   //ห้ามใช้: __FILE__
+      $path = $_SERVER['PHP_SELF'];   // DO NOT USE: __FILE__ it returns full file path and may not match the way URLs or menu items are structured
       foreach ($file as $f) {
             if (stripos($path, $f) != null) {
                  return ' active';
@@ -11,8 +10,7 @@ function is_active(...$file) {
       return '';
 }
 ?>
-<!--  navbar ของ bootstrap โดยให้ขยายออกในหน้าจอขนาด lg
-         และซ่อนในหน้าจอเล็กว่า lg (เปิดแสดงโดยคลิกที่ไอคอน hamburger)  -->
+ <!-- Bootstrap navbar that expands on screens of size lg and above, and hidden on smaller screens (displayed by clicking the hamburger icon) -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top py-0 pr-2 justify-content-start" style="min-width: 600px">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler">
             <span class="navbar-toggler-icon"></span>
@@ -25,10 +23,10 @@ function is_active(...$file) {
     
       <div class="collapse navbar-collapse" id="navbarToggler">
             <ul class="navbar-nav">
-                  <li class="nav-item<?= is_active('/index.php') ?>"><a class="nav-link" href="index.php">หน้าแรก</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#">การสั่งซื้อและจัดส่ง</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#">วิธีชำระเงิน</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#">ติดต่อเรา</a></li>
+                  <li class="nav-item<?= is_active('/index.php') ?>"><a class="nav-link" href="index.php">Home</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#">Order and Delivery</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#">Payment Method</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
             </ul>         
       </div>
     
@@ -36,7 +34,7 @@ function is_active(...$file) {
       <?php
       @session_start();
       if (!isset($_SESSION['member_name'])) {
-            echo  '<a href="member-signin.php" class="btn btn-sm btn-danger">ลงชื่อเข้าใช้</a>';
+            echo  '<a href="member-signin.php" class="btn btn-sm btn-danger">Sign In</a>';
       } else {
             $name = mb_substr($_SESSION['member_name'], 0, 16);
 
@@ -44,12 +42,12 @@ function is_active(...$file) {
             <div class="dropdown d-inline">
                   <a href=# class="btn btn-sm btn-info dropdown-toggle" data-toggle="dropdown" style="max-width: 160px">$name</a>
                   <div class="dropdown-menu mt-2 bg-light" style="max-width: 300px">
-                        <a class="dropdown-item w-auto" href="cart.php">ตรวจสอบรถเข็นและสั่งซื้อ</a>
-                        <a class="dropdown-item w-auto" href="member-order-list.php">ประวัติการสั่งซื้อและแจ้งชำระเงิน</a>
-                        <a class="dropdown-item" href="#">รายการที่ชอบ</a>    
+                        <a class="dropdown-item w-auto" href="cart.php">Inspect cart and place order</a>
+                        <a class="dropdown-item w-auto" href="member-order-list.php">Purchase history and payment notice</a>
+                        <a class="dropdown-item" href="#">Favorite</a>    
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="member-signin.php">ข้อมูลส่วนตัว</a>              
-                        <a class="dropdown-item" href="member-signout.php">ออกจากระบบ</a>
+                        <a class="dropdown-item" href="member-signin.php">Personal Information</a>              
+                        <a class="dropdown-item" href="member-signout.php">Sign Out</a>
                   </div>
             </div>                    
             HTML;
@@ -57,7 +55,7 @@ function is_active(...$file) {
       ?>
       </div>
     
-      <!-- หากมีการส่งคีย์เวิร์ดเข้ามา ให้นำไปเติมลงในอินพุทของฟอร์ม  -->
+      <!-- if keyword is sent, insert it into the form input field -->
       <?php $q = $_GET['q'] ?? '';  ?>
       
       <form class="form-inline mr-2 my-2" method="get" action="search.php"> 
@@ -78,9 +76,8 @@ function is_active(...$file) {
 </nav>
 
 <script>    
-//เนื่องจาก Navbar และปุ่มรถเข็นจะปรากฏในทุกเพจ ซึ่งเมื่อเปิดเพจใด เราต้องอัปเดต
-//จำนวนสินค้าในรถเข็นมาแสดงใหม่ทกครั้ง โดยฟังก์ชันต่อไปนี้ จะใช้ในการส่ง request
-//ไปอ่านจำนวนสินค้าที่หยิบใส่รถเข็น เพื่อนำตัวเลขมาแสดงที่ปุ่มบน Navbar
+// navbar and cart button will appear on every page, when opening any page need to update number of items in cart and display it again each time
+// this function will send a request to fetch number of items added to the cart so the number can be displayed on the button in the Navbar.
 function updateCart() {
      $.ajax({
            url: 'ajax-update-cart.php', 
@@ -93,8 +90,7 @@ function updateCart() {
       });
 }
 
-//ให้เรียกฟังก์ชัน updateCart() เมื่อองค์ประกอบต่างๆ ภายในเพจ
-//ถูกโหลดมาจนครบหมดแล้ว เพื่อให้ปุ่ม Navbar พร้อมแสดงข้อมูลได้
+
 $(function() {
      updateCart();     
 });

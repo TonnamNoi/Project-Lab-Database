@@ -36,7 +36,7 @@ if (!isset($_GET['id'])) {
       <script>
       $(function() {
             $('a#cancel').click(function() {
-                  if (confirm('ยืนยันการยกเลิกคำสั่งซื้อนี้ ?')) {
+                  if (confirm('Confirm your purchase?')) {
                          $('#form-cancel').submit();
                   }
             });
@@ -50,7 +50,8 @@ if (!isset($_GET['id'])) {
 <?php      
 $order_id = $_GET['id'] ?? 0;
 $mysqli = new mysqli('localhost', 'root', 'root', 'project1');
-//ถ้าส่งค่า id สำหรับยกเลิกการสั่งซื้อเข้ามา ก็ให้ใช้เป็นเงื่อนไขเพื่อลบออกจากตาราง orders และ orders_item
+
+// if cancellation ID is sent, use it to remove data from "orders" and "orders_item" tables
 if (isset($_POST['cancel_id'])) {
       $cancel_id = $_POST['cancel_id'];
       $sql = "DELETE FROM orders WHERE id = $cancel_id";
@@ -59,7 +60,8 @@ if (isset($_POST['cancel_id'])) {
       $sql = "DELETE FROM orders_item WHERE order_id = $cancel_id";
       $mysqli->query($sql);                
 }
-//ถ้าส่งข้อมูลการแจ้งชำเงินเข้ามา ก็นำไปอัปเดตตาราง orders
+
+// if payment info is sent, update "orders" table
 if (isset($_POST['bank'])) {
       $bank = $_POST['bank'];
       $date = $_POST['date'];
@@ -73,31 +75,30 @@ if (isset($_POST['bank'])) {
       $mysqli->query($sql);
 }
 
-//อ่านข้อมูลรายละเอียดการสั่งซื้อมาแสดงผล
+// fetch order info and display it
 $sql = "SELECT * FROM orders WHERE id = $order_id";
 $result_orders = $mysqli->query($sql);
 
 if ($mysqli->error || $result_orders->num_rows == 0) {
-      echo '<h6 class="text-center text-danger">ไม่พบข้อมูล <br>หรือการสั่งซื้อถูกยกเลิกแล้ว</h6>';
+      echo '<h6 class="text-center text-danger">No data found <br>or the order has been canceled</h6>';
       goto end_page;
 }
 
 $order = $result_orders->fetch_object();
 $t = strtotime($order->order_date);
-$d = date('d-m-Y', $t);       //แปลงรูปแบบวัน-เดือน-ปี     
+$d = date('d-m-Y', $t);       // change format to day-month-year
 
-//แสดงข้อมูลในแบบ grid ของ bootstrap
+// show info as grid for bootstrap
  echo <<<HTML
-<h6 class="text-info mb-4 text-center">รายละเอียดการสั่งซื้อและแจ้งชำระเงิน</h6>
+<h6 class="text-info mb-4 text-center">Order and payment details</h6>
 <div class="container">
 <div class="row pb-3">
-      <div class="col-12 col-md-6">รหัสสั่งซื้อ #$order_id</div>
-      <div class="col-12 col-md-6 text-md-right">วันที่ $d</div>
+      <div class="col-12 col-md-6">Transaction ID #$order_id</div>
+      <div class="col-12 col-md-6 text-md-right">Date $d</div>
 </div>        
 HTML;           
 
- //สินค้าแต่ละรายการที่สั่งซื้อต้องใช้ข้อมูลร่วมกันจาก 2 ตาราง
- //คือ orders_item และ product จึงจะครบสมบูรณ์
+ // each item in the order requires data from "orders_item" and "product" tables to be complete
 $sql =<<<SQL
       SELECT oi.*,  p.* 
       FROM orders_item oi
@@ -109,7 +110,7 @@ SQL;
 $result_items = $mysqli->query($sql);
 
  if ($mysqli->error || $result_items->num_rows == 0) {
-      echo '<h6 class="text-center text-danger">ไม่พบข้อมูล</h6>';
+      echo '<h6 class="text-center text-danger">Data not found</h6>';
       goto end_page;
 }
 
@@ -134,8 +135,8 @@ while ($data = $result_items->fetch_object()) {
                    <h6><a href="product-detail.php?id=$data->id">$n</a></h6>
                    <div class="d-flex justify-content-between align-items-center">
                         <div class="small">
-                              ราคา: $price<br>
-                              จำนวน: $qty
+                              Price: $price<br>
+                              Quantity: $qty
                         </div>
                         <div>$st</div>
                   </div>
@@ -149,11 +150,11 @@ $f_dvr_cost = number_format($dvr_cost);
 
 echo <<<HTML
 <div class="row py-2">
-      <div class="col text-center">ค่าจัดส่งรวม</div>
+      <div class="col text-center">Total delivery cost</div>
       <div class="col text-right">$f_dvr_cost</div>
 </div>   
 <div class="row pt-4 pb-2">
-      <div class="col text-center">รวมทั้งสิ้น</div>
+      <div class="col text-center">Grand total</div>
       <div class="col text-right">$gt</div>
 </div>       
 HTML;
@@ -162,21 +163,21 @@ HTML;
 $bs_class = 'btn-primary';
 $pay = '';
 if ($order->pay_status == 'paid') {
-      $pay = 'ชำระแล้ว';
+      $pay = 'Paid';
       $bs_class = 'd-none';
 } else if ($order->pay_status == 'pending') {
       if ($order->payment == 'cod') {
-            $pay = 'ชำระปลายทาง';
+            $pay = 'Cash on delivery(COD)';
             $bs_class = 'd-none';
       } else if (!empty($order->bank_transfer)) {
-            $pay = 'รอตรวจสอบ';
+            $pay = 'Pending verification';
       } else {
-            $pay = 'ค้างชำระ';
+            $pay = 'Unpaid';
       }
 }
 
 $btn_notify =<<<BTN_NOTIFY
-<button id="pay-notify" class="btn btn-sm $bs_class mb-4" data-toggle="modal" data-target="#modalNotify">แจ้งโอนเงิน</button>
+<button id="pay-notify" class="btn btn-sm $bs_class mb-4" data-toggle="modal" data-target="#modalNotify">Transfer notification</button>
 BTN_NOTIFY;   
 
 $btn_cancel ='';
@@ -184,7 +185,7 @@ if ($order->pay_status != 'paid' && $order->delivery != 'yes') {
       $btn_cancel =<<<CANCEL
       <form id="form-cancel" method="post">
             <input type="hidden" name="cancel_id" value="$order->id">
-            <a href=# id="cancel" title="ยกเลิกการสั่งซื้อ"><i class="fas fa-trash"></i></a>
+            <a href=# id="cancel" title="Cancel order"><i class="fas fa-trash"></i></a>
       </form>
       CANCEL;                     
 }
@@ -193,17 +194,17 @@ $dvr = '';
 if ($order->delivery == 'yes') {
       $dvr = '<div class="text-success">
                         <i class="fa fa-truck"></i><br>
-                        จัดส่งสินค้าแล้ว</div>';
+                        Item has been shipped</div>';
 }
 
 echo <<<HTML
 <div class="row pt-3 pb-2">
-      <div class="col text-center">การชำระเงิน</div>
+      <div class="col text-center">Payment method</div>
       <div class="col text-right">$pay</div>
 </div>
 <div class="row pt-3 pb-2">
       <div class="col text-center">
-            <p class="text-info">ที่อยู่ในการจัดส่ง</p>
+            <p class="text-info">Delivery address</p>
             $order->firstname  $order->lastname <br>
             $order->address <br>
             $order->phone               
@@ -221,34 +222,34 @@ echo '</div>';  //end grid container
 <br><br><br><br>        
 </div> <!-- main container -->
 
-<!-- ฺbootstrap modal  แสดงฟอร์มแจ้งชำระเงิน -->
+<!-- ฺbootstrap modal display payment form -->
 <div id="modalNotify" class="modal fade">
 <form id="modal-form" method="post">
 <div class="modal-dialog">
       <div class="modal-content">
             <div class="modal-header">
-                  <h6 class="modal-title">แจ้งชำระเงิน</h6>
+                  <h6 class="modal-title">Payment confirmation</h6>
                   <button class="close" data-dismiss="modal">
                   <span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                   <div class="form-group">
-                        <label>ธนาคารที่โอน:</label>
+                        <label>Bank of transfer:</label>
                         <select name="bank" class="form-control form-control-sm w-auto">
-                              <option value="กรุงเทพ">กรุงเทพ</option>
-                              <option value="กรุงไทย">กรุงไทย</option>
-                              <option value="กสิกรไทย">กสิกรไทย</option>
-                              <option value="ไทยพาณิชย์">ไทยพาณิชย์</option>
+                              <option value="BBL">Bangkok Bank</option>
+                              <option value="KTB">Krungthai Bank</option>
+                              <option value="KBANK">Kasikorn Bank</option>
+                              <option value="SCB">Siam Commercial Bank</option>
                         </select>
                   </div>
                   <div class="form-group">
-                      <label>วันเวลาที่โอน:</label><br>
+                      <label>Date and time of payment:</label><br>
                         <input type="date" name="date" class="form-control form-control-sm d-inline w-auto" required>
                         <input type="time" name="time" class="form-control form-control-sm d-inline w-auto" required>
                   </div>
             </div>
             <div class="modal-footer justify-content-center">
-                  <button id="modal-btn-submit" class="btn btn-primary">ตกลง</button>
+                  <button id="modal-btn-submit" class="btn btn-primary">Confirm</button>
             </div>
       </div>
 </div>

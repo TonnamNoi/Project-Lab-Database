@@ -31,14 +31,14 @@ if (!isset($_SESSION['member_id'])) {
       <script>
       $(function() {
             $('a.delete').click(function() {
-                  if (confirm('ยืนยันการลบสินค้ารายการนี้ออกจากรถเข็น')) {
+                  if (confirm('Are you sure you want to remove this item from the cart?')) {
                         var del_id = $(this).attr('data-id');
                         $('#delete-id').val(del_id);
                         $('#form-delete').submit();
                   }
             });
             
-            //เมื่อคลิกที่ปุ่ม "สั่งซื้อสินค้า"
+            // when click the 'Place Order' button.
             $('a.checkout').click(function() {
                   $('#form-checkout').submit();
            });
@@ -52,14 +52,15 @@ if (!isset($_SESSION['member_id'])) {
 <form method="post" id="form-cart">   
 <?php      
 $mid = $_SESSION['member_id'];
-$mysqli = new mysqli('localhost', 'root', '', 'pmdb_simple_store');
-//ถ้าส่งค่า id สำหรับการลบขึ้นมา ก็นำไปกำหนดเงื่อนไขเพื่อลบข้อมูลออกจากตาราง cart
+$mysqli = new mysqli('localhost', 'root', 'root', 'project1');
+
+// When delete ID is sent, apply it as a condition to remove data from "cart" table
 if (isset($_POST['delete_id'])) {
       $pid = $_POST['delete_id'];
       $sql = "DELETE FROM cart WHERE member_id = $mid AND product_id = $pid";
       $mysqli->query($sql);
 }
-//ถ้าส่งจำนวนขึ้นมา เราต้องนำค่าทั้งหมดจากฟอร์ม ไปอัปเดตทุกรายการ
+// when quantity is given, update every entry with the form data
 if (isset($_POST['qty'])) {
       $count = count($_POST['qty']);
       for ($i = 0; $i < $count; $i++) {
@@ -72,7 +73,7 @@ if (isset($_POST['qty'])) {
       }
 }
 
-//อ่านข้อมูลจากตาราง cart + product มาแสดง
+// fetch and display data from the "cart" and "product" tables
 $sql =<<<SQL
       SELECT p.*,  c.quantity 
       FROM product p 
@@ -83,28 +84,28 @@ SQL;
 
 $result = $mysqli->query($sql);
 if ($mysqli->error || $result->num_rows == 0) {
-      echo '<h6 class="text-center text-danger">ไม่มีสินค้าในรถเข็น</h6>';
+      echo '<h6 class="text-center text-danger">Cart is empty</h6>';
       $mysqli->close();
       include 'footer.php';
       exit ('</form></div></body></html>');
 }
 
-echo '<h6 class="text-info mb-4 text-center">รายการสินค้าในรถเข็น</h6>';
+echo '<h6 class="text-info mb-4 text-center">Cart items</h6>';
 echo '<div class="container">';
 
 $grand_total = 0;
 $dvr_cost = 0;
 while ($p = $result->fetch_object()) {
-      $n = mb_substr($p->name, 0, 20);    //เอา 20 ตัวแรกของชื่อสินค้า
+      $n = mb_substr($p->name, 0, 20);    // first 20 product name
       
-      $img_files = explode(',', $p->img_files);       //แยกชื่อภาพออกจากกัน
+      $img_files = explode(',', $p->img_files);       // split the image and name
       $src = "product-images/$p->id/{$img_files[0]}";
       
       $price = number_format($p->price);
-      $subtotal = $p->price * $p->quantity;     //ผลรวมย่อยของแต่ละรายการ
+      $subtotal = $p->price * $p->quantity;     // subtotal for each item
       $st = number_format($subtotal);
-      $grand_total += $subtotal;                      //ผลรวมสะสมของทุกรายการ
-      $dvr_cost += $p->delivery_cost * $p->quantity;  //ค่าจัดส่งสะสมทุกรายการ
+      $grand_total += $subtotal;                      // grand total of all items
+      $dvr_cost += $p->delivery_cost * $p->quantity;  // total shipping cost for all items
       
       echo <<<HTML
       <div class="row py-2">
@@ -113,8 +114,8 @@ while ($p = $result->fetch_object()) {
                    <h6><a href="product-detail.php?id=$p->id" target="_blank">$n</a></h6>
                    <div class="d-flex justify-content-between align-items-center">
                         <div class="small">
-                              ราคา: $price<br>
-                              จำนวน: <input type="number" name="qty[]" class="" size="3" maxlength="3" min="1" max="$p->remain" value="$p->quantity">
+                              Price: $price<br>
+                              Quantity: <input type="number" name="qty[]" class="" size="3" maxlength="3" min="1" max="$p->remain" value="$p->quantity">
                               <input type="hidden" name="pid[]" value="$p->id">
                               <div>
                                     <a href=# class="delete" data-id="$p->id">
@@ -137,22 +138,22 @@ $gt = number_format($grand_total);
 echo <<<HTML
 <div class="row py-3">
       <div class="col-7 col-md-9 text-center">
-            ค่าจัดส่งรวม
+            Total delivery cost
       </div>
       <div class="col-5 col-md-3 text-right">$f_dvr_cost</div>
 </div>
 <div class="row py-3">
       <div class="col-7 col-md-9 text-center">
-            รวมทั้งสิ้น
+            Total amount
       </div>
       <div class="col-5 col-md-3 text-right">$gt</div>
 </div>
 <div class="row py-3">
       <div class="col-7 col-md-9 text-center">
-            ถ้าเปลี่ยนแปลงจำนวนสินค้า ให้คลิกปุ่ม <b>คำนวณใหม่</b> เพื่อบันทึกการเปลี่ยนแปลง
+            To update items quantity, click the <b>Recalculate</b> button to save changes
       </div>
       <div class="col-5 col-md-3 text-right">
-            <button type="submit" class="btn btn-primary btn-sm">คำนวณใหม่</button>
+            <button type="submit" class="btn btn-primary btn-sm">Recalculate</button>
       </div>
 </div>
 HTML;
@@ -163,8 +164,8 @@ $mysqli->close();
 ?>
     
 <div class="text-center mt-4">
-      <a href="index.php" class="btn btn-sm btn-info mr-2 mr-md-5 px-md-5">&laquo; เลือกสินค้าเพิ่มเติม</a>
-      <a href="#" class="checkout btn btn-sm btn-success px-md-5">สั่งซื้อสินค้า &raquo;</a>
+      <a href="index.php" class="btn btn-sm btn-info mr-2 mr-md-5 px-md-5">&laquo; Add more product</a>
+      <a href="#" class="checkout btn btn-sm btn-success px-md-5">Purchase items &raquo;</a>
 </div>
 
 <br><br><br><br>

@@ -36,13 +36,13 @@ if (!isset($_GET['id'])) {
       <script>
       $(function() {
             $('a#delete').click(function() {
-                  if (confirm('ยืนยันการยกเลิกคำสั่งซื้อนี้ ?')) {
+                  if (confirm('Confirm cancellation of this order?')) {
                          $('#form-delete').submit();
                   }
             });
 
             $('button#update').click(function() {                  
-                  if (confirm('ยืนยันการแก้ไขสถานะของคำสั่งซื้อนี้ ?')) {
+                  if (confirm('Confirm status update for this order?')) {
                          $('#form-delivery').submit();
                   }
             });
@@ -94,7 +94,7 @@ $sql = "SELECT * FROM orders WHERE id = $order_id";
 $result_orders = $mysqli->query($sql);
 
 if ($mysqli->error || $result_orders->num_rows == 0) {
-      echo '<h6 class="text-center text-danger">ไม่พบข้อมูล <br>หรือการสั่งซื้อถูกยกเลิกแล้ว</h6>';
+      echo '<h6 class="text-center text-danger">No data found <br>or the order has been canceled</h6>';
       goto end_page;
 }
 
@@ -103,7 +103,7 @@ $t = strtotime($order->order_date);
 $d = date('d-m-Y');            
 
  echo <<<HTML
-<h6 class="text-info mb-4 text-center">รายละเอียดการสั่งซื้อ</h6>
+<h6 class="text-info mb-4 text-center">Order details</h6>
 <div class="container">
 <div class="row pb-3">
       <div class="col">
@@ -112,8 +112,8 @@ $d = date('d-m-Y');
             $order->phone               
       </div>
       <div class="col text-md-right">
-            รหัสสั่งซื้อ #$order_id<br>
-            วันที่ $d
+            Transaction ID #$order_id<br>
+            Date $d
       </div>
 </div>        
 HTML;           
@@ -129,7 +129,7 @@ SQL;
 $result_items = $mysqli->query($sql);
 
  if ($mysqli->error || $result_items->num_rows == 0) {
-      echo '<h6 class="text-center text-danger">ไม่พบข้อมูล</h6>';
+      echo '<h6 class="text-center text-danger">Data not found</h6>';
       goto end_page;
 }
 
@@ -154,8 +154,8 @@ while ($data = $result_items->fetch_object()) {
                    <h6><a href="product-detail.php?id=$data->id">$n</a></h6>
                    <div class="d-flex justify-content-between align-items-center">
                         <div class="small">
-                              ราคา: $price <br>
-                              จำนวน: $qty
+                              Price: $price <br>
+                              Quantity: $qty
                         </div>
                         <div>$st</div>
                   </div>
@@ -169,11 +169,11 @@ $f_dvr_cost = number_format($dvr_cost);
 
 echo <<<HTML
 <div class="row py-2">
-      <div class="col text-center">ค่าจัดส่งรวม</div>
+      <div class="col text-center">Total delivery cost</div>
       <div class="col text-right">$f_dvr_cost</div>
 </div>   
 <div class="row pt-4 pb-2">
-      <div class="col text-center">รวมทั้งสิ้น</div>
+      <div class="col text-center">Grand total</div>
       <div class="col text-right">$gt</div>
 </div>       
 HTML;
@@ -181,15 +181,15 @@ HTML;
 $pay = '';
 $payment_chk = '';
 if ($order->pay_status == 'paid') {
-      $pay = 'ชำระแล้ว';
-      $payment_chk = ' checked';
+      $pay = 'Pain';
+      $payment_chk = 'checked';
 } else if ($order->pay_status == 'pending') {
       if ($order->payment == 'cod') {
-            $pay = 'ชำระปลายทาง';
+            $pay = 'Cash on delivery(COD)';
       } else if (!empty($order->bank_transfer)) {
-            $pay = 'รอตรวจสอบ';
+            $pay = 'Pending verification';
       } else {
-            $pay = 'ค้างชำระ';
+            $pay = 'Unpaid';
       }
 }
 
@@ -199,7 +199,7 @@ if (!empty($order->bank_transfer)) {
       $tm = date('H:i', strtotime($order->time_transfer));
 
       $pay_notify =<<<TEXT
-      ธนาคาร$order->bank_transfer<br>
+      Bank: $order->bank_transfer<br>
       $dt $tm
       TEXT;        
 }
@@ -213,34 +213,34 @@ $dvr_chk = '';
 
 echo <<<HTML
 <div class="row pt-3 pb-2">
-      <div class="col text-center">วิธีชำระเงิน</div>
+      <div class="col text-center">Payment methods</div>
       <div class="col text-right">$pay</div>
 </div>
 <div class="row pt-3 pb-2">
-      <div class="col text-center">การแจ้งชำระเงิน</div>
+      <div class="col text-center">Payment notification</div>
       <div class="col text-right">$pay_notify</div>
 </div>   
 
 <div class="row py-2">
-      <div class="col text-center">การจัดส่ง</div>
+      <div class="col text-center">Shipping</div>
       <div class="col text-right">$dvr</div>
 </div>  
 
 <div class="row pt-3 pb-2">
       <div class="col text-center">
-            แก้ไขสถานะ <br><br><br>
+            Update status <br><br><br>
             <form id="form-delete" method="post">
                   <input type="hidden" name="delete_id" value="$order->id">
-                  <a href=# id="delete" title="ยกเลิกการสั่งซื้อ"><i class="fas fa-trash"></i></a>
+                  <a href=# id="delete" title="Cancel the order"><i class="fas fa-trash"></i></a>
             </form>
       </div>
       <div class="col text-right">
       <form id="form-delivery" method="post">
             <input type="checkbox" name="payment" $payment_chk>
-            <span>ชำระเงินแล้ว</span><br>
+            <span>Paid</span><br>
             <input type="checkbox" name="delivery" $dvr_chk>
-            <span>ส่งสินค้าแล้ว</span><br><br>
-            <button type="button" id="update" class="btn btn-sm btn-primary">ตกลง</button>
+            <span>Item shipped</span><br><br>
+            <button type="button" id="update" class="btn btn-sm btn-primary">Confirm</button>
       </form>                        
       </div>
 </div> 
