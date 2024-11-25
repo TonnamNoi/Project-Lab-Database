@@ -86,7 +86,7 @@ while ($order = $result->fetch_object()) {
             $dvr = '<i class="far fa-check-circle text-success"></i>';
       }
 
-      $a = "<a href=\"admin-order-detail.php?id=$order_id\" target=\"_blank\">Detaila</a>";
+      $a = "<a href=\"admin-order-detail.php?id=$order_id\" target=\"_blank\">Detail</a>";
 
       echo <<<ROW
       <tr class="text-center">

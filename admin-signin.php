@@ -48,7 +48,7 @@ if (!isset($_SESSION['admin'])) {
       echo <<<HTML
       <h6 class="text-success text-center mb-3">For the website's administrator</h6>
       <a href="admin-order-list.php" class="btn btn-success btn-sm mb-2 d-block mx-auto px-5">Inspect order list</a>
-      <a href="admin-add-product.php" class="btn btn-info btn-sm mb-5 d-block mx-auto px-5">Add Productา</a>
+      <a href="admin-add-product.php" class="btn btn-info btn-sm mb-5 d-block mx-auto px-5">Add Product</a>
       <a href="admin-signout.php" class="btn btn-danger btn-sm mb-3 d-block mx-auto px-5">Sign out</a> 
       HTML;
 }

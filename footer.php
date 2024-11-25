@@ -7,9 +7,9 @@
         <div class="dropup d-inline">
             <button type="button" class="btn btn-info btn-sm dropdown-toggle small" data-toggle="dropdown">admin</button>
             <div class="dropdown-menu">
-                <a href="admin-add-product.php" class="dropdown-item">Add</a>
-                <a href="admin-order-list.php" class="dropdown-item">Order</a>
-                <a href="admin-signout.php" class="dropdown-item">Logout</a>
+                <a href="admin-add-product.php" class="dropdown-item">Add Product</a>
+                <a href="admin-order-list.php" class="dropdown-item">Inspect order list</a>
+                <a href="admin-signout.php" class="dropdown-item">Sign out</a>
             </div> <!-- dropdown -->
         </div> <!-- dropup -->
         HTML;
