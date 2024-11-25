@@ -1,4 +1,7 @@
 <?php
+
+// Encrypt the admin password and update it into "admin" table
+
 // Enable error reporting to debug any issues
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -14,13 +17,13 @@ if ($mysqli->connect_error) {
 }
 
 // Encryption settings
-$key = '12345';  // Your encryption key
+$key = '12345';  // Encryption key
 $method = 'aes-256-cbc'; // Encryption method
 
 // Generate an initialization vector (IV) for the encryption
 $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($method));
 
-// The password to encrypt
+// Password to encrypt
 $password = 'hello123';
 
 // Encrypt the password
@@ -38,7 +41,7 @@ if (!$stmt) {
 }
 
 // Bind parameters and execute the statement
-$admin_username = 'admin';  // The username you want to update (admin in this case)
+$admin_username = 'admin';  // username you want to update
 $stmt->bind_param('sss', $encrypted_password, $iv_base64, $admin_username);
 
 if ($stmt->execute()) {
