@@ -93,7 +93,16 @@
                   $img_tags .= "<img src=\"$src\" data-image=\"$src\">";
             }
 
-            $r = ($p->remain > 0) ? 'Products in stock' : '<span class="text-danger">Product out of stock</span>';
+            $stock = $p->remain;
+            $r = ($p->remain > 0)
+                  ? "<span class='d-inline-block text-white bg-success px-3 py-2 rounded'>In Stock: $stock</span>"
+                  : "<span class='d-inline-block text-white bg-danger px-3 py-2 rounded'>Out of Stock</span>";
+
+
+
+
+
+
             $cart_class = ($p->remain > 0) ? 'btn-primary' : 'btn-secondary disabled';
             $price = number_format($p->price);
             echo <<<HTML
