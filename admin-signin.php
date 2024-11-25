@@ -21,26 +21,53 @@
 
 <form id="main-form" method="post" class="m-auto pt-4">
 <?php     
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-      $login = $_POST['login'];
-      $pswd = $_POST['pswd'];
+// Database connection
+$mysqli = new mysqli('localhost', 'root', 'root', 'project1');
 
-      if ($login = 'admin' && $pswd == '12345') {
+// Check the connection
+if ($mysqli->connect_error) {
+    die("Connection failed: " . $mysqli->connect_error);
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $login = $_POST['login'];
+    $pswd = $_POST['pswd'];
+
+    // Check if the username exists in the database
+    $sql = "SELECT * FROM admin WHERE admin_username = ?";
+    $stmt = $mysqli->prepare($sql);
+    $stmt->bind_param('s', $login);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $admin = $result->fetch_assoc();
+        
+        // Verify the password against the hashed password from the database
+        if (password_verify($pswd, $admin['admin_password'])) {
             $_SESSION['admin'] = '1';
-      } else  {
-             echo <<<HTML
+        } else {
+            echo <<<HTML
             <div class="alert alert-danger mb-4" role="alert">
-                  Invalid username or password
+                  Invalid Username or Password
                   <button class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             </div>
-            HTML; 
-      }
+            HTML;
+        }
+    } else {
+        echo <<<HTML
+        <div class="alert alert-danger mb-4" role="alert">
+              Invalid Username or Password
+              <button class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        </div>
+        HTML;
+    }
 }
 
 if (!isset($_SESSION['admin'])) {
      echo <<<HTML
       <h6 class="text-info text-center mb-4">Admin username and password</h6>
-      <input type="text" name="login" placeholder="Username" class="form-control form-control-sm mb-3">
+      <input type="text" name="login" placeholder="Admin Username" class="form-control form-control-sm mb-3">
       <input type="password" name="pswd" placeholder="Password"  class="form-control form-control-sm mb-4">   
       <button class="btn btn-primary btn-sm d-block m-auto px-5">Confirm</button>
      HTML;
