@@ -4,7 +4,7 @@
 <head>
       <?php require 'head.php'; ?>
       <link href="js/unite-gallery/css/unite-gallery.css" rel="stylesheet">
-      <link href="js/unite-gallery/themes/compact/ug-theme-compact.css" rel="stylesheet">
+      <!-- <link href="js/unite-gallery/themes/compact/ug-theme-compact.css" rel="stylesheet"> -->
       <style>            
             div#main-container {
                 max-width: 800px;
@@ -32,6 +32,7 @@
             // when click "Add to Cart" button, read the product ID from the data-id attribute of the button and send it via AJAX to the ajax-add-cart.php page.
             $('#add-cart').click(function() {
                   var id = $(this).attr('data-id');
+                  // alert('The inputed value is ' + (id ? id : 'empty'));
                   $.ajax({
                         url: 'ajax-add-cart.php', 
                         data: {'pro_id': id}, 
@@ -40,7 +41,7 @@
                         // while sending the request, hide the background with a LoadingOverlay
                         beforeSend: () => {
                                 $.LoadingOverlay('show', {
-                                        image: 'clock-loading.gif',
+                                        image: 'loading.png',
                                         background: 'rgba(200, 200, 200, 0.6)',
                                         text: 'Processing...',
                                         textResizeFactor: 0.15

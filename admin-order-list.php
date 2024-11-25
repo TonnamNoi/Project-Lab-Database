@@ -33,7 +33,7 @@ if (!isset($_SESSION['admin'])) {
 require 'lib/pagination-v2.class.php';
 $page = new PaginationV2();
 
-$mysqli = new mysqli('localhost', 'root', '', 'pmdb_simple_store');
+$mysqli = new mysqli('localhost', 'root', 'root', 'project1');
 $sql = "SELECT * FROM orders ORDER BY id DESC";
 $result = $page->query($mysqli, $sql);
 

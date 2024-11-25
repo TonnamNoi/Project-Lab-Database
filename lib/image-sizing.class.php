@@ -112,7 +112,7 @@ class ImageSizing {
 				$height = $max_height;
 				if ($width > $max_width) {
 					$r = $width / $max_width;
-					$height = intval($heigh / $r);
+					$height = intval($height / $r);
 					$width = $max_width;	
 				}
 			} else {

@@ -1,4 +1,4 @@
-<?php 
+<?php
 @session_start();
 if (!isset($_SESSION['member_id'])) {
       header('location: member-signin.php');
@@ -10,10 +10,12 @@ if (!isset($_SESSION['member_id'])) {
 ?>
 <!doctype html>
 <html>
+
 <head>
       <?php require 'head.php'; ?>
       <style>
-            html, body { 
+            html,
+            body {
                   width: 100%;
                   height: 100%;
                   background: azure;
@@ -25,21 +27,22 @@ if (!isset($_SESSION['member_id'])) {
             }
       </style>
       <script>
-      $(function() {
-             $('button.placeorder').click(function() {
-                   if (confirm('Confirm your purchase?')) {
-                         $('#main-form').submit();
-                   }
-             })
-      });     
+            $(function() {
+                  $('button.placeorder').click(function() {
+                        if (confirm('Confirm your purchase?')) {
+                              $('#main-form').submit();
+                        }
+                  })
+            });
       </script>
 </head>
-<body class="d-flex pt-5 px-3">  
-    
-<form method="post" id="main-form" action="place-order.php" class="m-auto">
-<h6 class="text-success text-center" style="font-size: 1.5rem">Simple Store</h6>
-<hr>
-<h6 class="mb-5 text-center text-info">Payment methods and shipping details</h6>
+
+<body class="d-flex pt-5 px-3">
+
+      <form method="post" id="main-form" action="place-order.php" class="m-auto">
+            <h6 class="text-success text-center" style="font-size: 1.5rem">Simple Store</h6>
+            <hr>
+            <h6 class="mb-5 text-center text-info">Payment methods and shipping details</h6>
 
 <span class="mt-4 mb-2 d-block text-success">Payment methods</span>
 <div class="custom-control custom-radio">
@@ -70,12 +73,13 @@ $m = $result->fetch_object();
 <textarea name="address" rows="3" class="form-control form-control-sm mb-2" placeholder="Address" required><?= $m->address ?></textarea>
 <input type="text" name="phone" placeholder="Phone No."  class="form-control form-control-sm" value="<?= $m->phone ?>" required>
 
-<div class="text-center mt-4">
-      <a href="index.php" class="btn btn-danger btn-sm px-4 mr-5">Cancel</a>
-      <button type="button" class="placeorder btn btn-primary btn-sm px-4">Complete order</button>
-</div>
-<br><br><br><br>
-</form>
-    
+            <div class="text-center mt-4">
+                  <a href="index.php" class="btn btn-danger btn-sm px-4 mr-5">Cancel</a>
+                  <button type="button" class="placeorder btn btn-primary btn-sm px-4">Complete order</button>
+            </div>
+            <br><br><br><br>
+      </form>
+
 </body>
+
 </html>
