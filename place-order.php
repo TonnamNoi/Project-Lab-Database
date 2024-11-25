@@ -51,6 +51,7 @@ exit;
             <hr>
             <?php
             $mid = $_SESSION['member_id'];
+            $cart = $_SESSION['cart'] ?? [];
             $fname = $_POST['firstname'];
             $lname = $_POST['lastname'];
             $address = $_POST['address'];
@@ -82,10 +83,23 @@ exit;
             while ($cart = $result->fetch_object()) {
                   $pid = $cart->product_id;
                   $q = $cart->quantity;
-                  $sql = "INSERT INTO orders_item VALUES 
-                              (0, $order_id, $pid, $q)";
-
-                  $mysqli->query($sql);
+                  $product_sql = "SELECT remain FROM product WHERE id = $pid";
+                  $product_result = $mysqli->query($product_sql);
+                  $product = $product_result->fetch_object();
+  
+                  if ($product->remain >= $q) {
+                      // Deduct stock
+                      $new_stock = $product->remain - $q;
+                      $update_stock_sql = "UPDATE product SET remain = $new_stock WHERE id = $pid";
+                      $mysqli->query($update_stock_sql);
+  
+                      // Insert item into orders_item table
+                      $sql = "INSERT INTO orders_item (order_id, product_id, quantity) VALUES ($order_id, $pid, $q)";
+                      $mysqli->query($sql);
+                  } else {
+                      // If stock is insufficient, throw an error and roll back
+                      throw new Exception("Insufficient stock for product ID: $pid");
+                  }
             }
             // remove items that the customer has added to the cart from the "cart" table.
             $sql = "DELETE FROM cart WHERE member_id = $mid";
