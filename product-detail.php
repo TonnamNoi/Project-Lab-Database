@@ -29,8 +29,7 @@
 	ug.resetZoom();			
             });
             
-            //เมื่อคลิกปุ่ม "หยิ ug.selectItem(1)บใส่รถเข็น" ให้อ่านค่า id ของสินค้าที่แนบไว้กับแอตทริบิวต์ data-id ของปุ่ม
-            //แล้วส่งผ่าน AJAX ไปยังเพจ ajax-add-cart.php 
+            // when click "Add to Cart" button, read the product ID from the data-id attribute of the button and send it via AJAX to the ajax-add-cart.php page.
             $('#add-cart').click(function() {
                   var id = $(this).attr('data-id');
                   // alert('The inputed value is ' + (id ? id : 'empty'));
@@ -39,12 +38,12 @@
                         data: {'pro_id': id}, 
                         type: 'post',
                         dataType: 'html',
-                        //ในระหว่างที่ส่ง ให้ปิดทีบพื้นหลังด้วย LoadingOverlay
+                        // while sending the request, hide the background with a LoadingOverlay
                         beforeSend: () => {
                                 $.LoadingOverlay('show', {
                                         image: 'loading.png',
                                         background: 'rgba(200, 200, 200, 0.6)',
-                                        text: 'loading......',
+                                        text: 'Processing...',
                                         textResizeFactor: 0.15
                                 });
                         },
@@ -54,8 +53,7 @@
                               $('#show-alert').html(result);
                               
                               updateCart();     
-                              //ฟังก์ชันนี้อยู่ใน header.php เพื่อนับจำนวนสินค้าในรถเข็น
-                              //มาแสดงที่ปุ่มรถเข็นบน Navbar
+                              // this function is in header.php to count the number of items in the cart and display it on the cart button in the Navbar.
                         }               
                   });       
             });              
@@ -91,7 +89,7 @@ foreach ($img_files as $img) {
       $img_tags .= "<img src=\"$src\" data-image=\"$src\">";
 }                
 
-$r = ($p->remain > 0) ? 'มีสินค้า' : '<span class="text-danger">สินค้าหมด</span>';
+$r = ($p->remain > 0) ? 'Products in stock' : '<span class="text-danger">Product out of stock</span>';
 $cart_class = ($p->remain > 0) ? 'btn-primary' : 'btn-secondary disabled';
 $price = number_format($p->price);
 echo <<<HTML
@@ -105,15 +103,15 @@ echo <<<HTML
 <div class="col-12 col-md-6 d-flex flex-column justify-content-between">
       <div>
             <h6 class="text-success my-3">$p->name</h6>
-            <p>ราคา: $price บาท</p>
+            <p>Price: $price THB</p>
             $r
       </div>
       <div class="mt-2 mt-md-0">
             <a href="#" id="add-cart" class="btn btn-sm $cart_class mb-2" data-id="$p->id">
-                  <i class="fa fa-cart-plus mr-1"></i> หยิบใส่รถเข็น
+                  <i class="fa fa-cart-plus mr-1"></i> Add to cart
             </a><br>
             <a href="#" id="wishlist" class="btn btn-sm btn-info">
-                  <i class="fa fa-heart mr-1"></i> รายการที่ชอบ
+                  <i class="fa fa-heart mr-1"></i> Favorite
             </a>
       </div>
 </div>                 
@@ -126,9 +124,8 @@ echo <<<HTML
 </div>     <!-- /container -->            
 HTML;
 
-//จัดเก็บข้อมูลบางอย่างของสินค้ารายการนี้สำหรับแสดง Recently Viewed
-//โดยสิ่งที่จะเก็บประกอบด้วยตำแหน่งภาพสินค้า (ใช้ภาพแรก) และชื่อ (15 ตัวแรก)
-//แล้วสร้างเป็นลิงก์ แล้วเก็บไว้ในเซสชัน 
+// store some info about this product for displaying Recently Viewed
+// the info includes product image (use first image) and the name (first 15) then create a link and store it in the session.
 $url = $_SERVER['PHP_SELF'] .  '?' . $_SERVER['QUERY_STRING'];
 $img_src = $img_files[0];
 $n = mb_substr($p->name, 0, 15);
@@ -140,18 +137,16 @@ $link =<<<LINK
 </div>
 <div class="text-info mt-2 small">$n</div>
 LINK;
-//ตรวจสอบว่าได้สร้างเซสชันสำหรับเก็บข้อมูลหรือยัง
-//ถ้ายัง ให้สร้างในแบบอาร์เรย์ว่างขึ้นมาก่อน
+// check if the session has been created to store the data if not create an empty array for it
 if (!isset($_SESSION['recently_viewed'])) {
       $_SESSION['recently_viewed'] = [];
 }
-//ต้องตรวจสอบว่า ได้เก็บลิงก์ของสินค้าชนิดนี้ไว้ในเซสชันหรือยัง
-//เพื่อป้องกันการเก็บข้อมูลซ้ำซ้อนกัน 
-//ถ้ายัง ก็เพิ่มลงไปให้เป็นรายการแรกของอาร์เรย์ 
+// Check if the link for this product has already been stored in the session to prevent duplicate data
+// if not, add it as first item in the array.
 if (!in_array($link, $_SESSION['recently_viewed'])) {
 array_unshift($_SESSION['recently_viewed'], $link);
 }
-//นำรายการที่เคยเปิดดูมาแสดง
+// display the previously viewed items
 include 'recently-viewed.php';
 $mysqli->close()
 ?>

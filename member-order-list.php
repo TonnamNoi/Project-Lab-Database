@@ -25,26 +25,28 @@ if (!isset($_SESSION['member_id'])) {
 <?php require 'navbar.php'; ?> 
     
 <div class="main-container mx-auto px-3 pt-5">
-<h6 class="text-info mb-4 text-center">ประวัติการสั่งซื้อ</h6>
+<h6 class="text-info mb-4 text-center">Purchase history</h6>
 <?php      
 require 'lib/pagination-v2.class.php';
 $page = new PaginationV2();
 
 $mid = $_SESSION['member_id'];
 $mysqli = new mysqli('localhost', 'root', 'root', 'project1');
-//อ่านข้อมูลที่ลูกค้ารายนั้นเคยสั่งซื้อทั้งหมด (1 รายการต่อการสั่งซื้อ 1 ครั้ง)
+
+// get all past order details for customer (one item per order)
 $sql = "SELECT * FROM orders WHERE member_id = $mid ORDER BY id DESC";
 $result = $page->query($mysqli, $sql);
 if ($mysqli->error || $result->num_rows == 0) {
-      echo '<h6 class="text-center text-danger">ไม่พบข้อมูล</h6>';
+      echo '<h6 class="text-center text-danger">Data not found</h6>';
       goto end_page;
 }
-//แสดงผลแบบตาราง
+
+// show on the table
 echo <<<HTML
 <table class="table table-striped table-sm table-bordered mt-4 m-auto">
 <thead class="thead-dark">
 <tr class="text-center">
-      <th>วันที่</th><th>มูลค่ารวม</th><th>การชำระเงิน</th><th>การจัดส่ง</th><th></th>
+      <th>Date</th><th>Total value</th><th>Payment methods</th><th>Shipping</th><th></th>
 </tr>
 </thead>
 <tbody>
@@ -54,9 +56,9 @@ while ($order = $result->fetch_object()) {
       $order_id = $order->id;
       $t = strtotime($order->order_date);
       $d = date('d-m-Y', $t);
-      //หามูลค่ารวมของการสั่งซื้อแต่ละครั้ง ซึ่งต้องการอ่านจากตาราง orders_item
-      //ซึ่งเป็นรายการสินค้าแต่ละชิ้นที่สั่งซื้อ แต่เนื่องจากข้อมูลบางอย่าง เช่น ราคา และค่าจัดส่ง
-      //จัดเก็บอยู่ในตาราง product ดังนั้นจึงจำเป็นต้องใช้วิธีอ่านข้อมูลจากหลายตารางร่วมกัน
+
+      // calculate total value of each order which needs to be retrieved from the "orders_item" table which contains each item purchased
+      // some data such as price and shipping costs are stored in the "product table" so it need to read data from multiple tables together.
       $sql = "SELECT SUM((oi.quantity * p.price) + (oi.quantity * p.delivery_cost)) AS total
                   FROM orders_item oi 
                   LEFT JOIN product p
@@ -67,17 +69,17 @@ while ($order = $result->fetch_object()) {
       $row = $result2->fetch_object();
       $total = number_format($row->total);
 
-      //แสดงสถานะของการชำระเงินเป็นภาษาไทย
+      // display payment status
       $p = '';
       if ($order->pay_status == 'paid') {
-            $p = 'ชำระแล้ว';
+            $p = 'Paid';
       } else if ($order->pay_status == 'pending') {
             if ($order->payment == 'cod') {
-                  $p = 'ชำระปลายทาง';
+                  $p = 'Cash on delivery(COD)';
             } else if (!empty($order->bank_transfer)) {
-                  $p = 'รอตรวจสอบ';
+                  $p = 'Pending verification';
             } else {
-                  $p = 'ค้างชำระ';
+                  $p = 'Unpaid';
             }
       }
       
@@ -86,7 +88,7 @@ while ($order = $result->fetch_object()) {
             $dvr = '<i class="far fa-check-circle"></i>';
       }
 
-      $a = "<a href=\"member-order-detail.php?id=$order_id\" target=\"_blank\">รายละเอียดและแจ้งโอนเงิน</a>";
+      $a = "<a href=\"member-order-detail.php?id=$order_id\" target=\"_blank\">Payment details and notification</a>";
       echo "<tr class=\"text-center\"><td>$d</td><td>$total</td><td>$p</td><td>$dvr</td><td>$a</td></tr>";
 }
 echo '</tbody></table><br><br>';

@@ -65,12 +65,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       }      
       
       if ($num_errs == $num_upload_files) {    
-            $msg = 'มีข้อผิดพลาดในการอัปโหลดภาพ';
+            $msg = 'There was an error uploading the image';
             $contextual = 'alert-danger';
             goto end_post; 
       }     
       
-      //เพิ่มชื่อสินค้าลงในตาราง
+      // add the product name to the table
       $mysqli = new mysqli('localhost', 'root', 'root', 'project1');
       $sql = 'INSERT INTO product VALUES (?, ?, ?, ?, ?, ?, ?)';
       $stmt = $mysqli->stmt_init();        
@@ -80,12 +80,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       
       $stmt->bind_param('issdiis', ...$params);
       $stmt->execute();
-      $product_id = $stmt->insert_id;     //ค่า id ของแถวล่าสุด
+      $product_id = $stmt->insert_id;     // ID of latest row
       $stmt->close(); 
 
       require 'lib/image-sizing.class.php';
       
-      //ต้องสร้างโฟลเดอร์เข้าไปทีละชั้น
+      // create folders step by step, one level at a time.
       $image_folder = 'product-images';
       @mkdir($image_folder);
       $image_folder .= "/$product_id";
@@ -102,27 +102,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($type[0] != 'image') {
                   continue;
             }
-            //เปลี่ยนขนาดของภาพ
+            // resize the image
             $image = ImageSizing::from_upload('upfile', $i);
-            $image->resize_max(600, 600);  //wxh สูงสุดไม่เกิน 600
+            $image->resize_max(600, 600);  // maximum w x h not exceed 600
 
             $old_name = $_FILES['upfile']['name'][$i];
-            //คัดแยกเอาส่วนขยายของไฟล์ เพื่อนำไปใช้ในการบันทึก
+
+            // extract file extension for use in saving the file
             $ext = pathinfo($old_name, PATHINFO_EXTENSION);	
-            //เอา id ของสินค้า, เลขลำดับภาพ และส่วนขยายมาเชื่อมต่อกัน
-            $new_name ="$product_id-$n.$ext";   //เช่น 1-1.png, 1-2.png
+
+            // combine product ID, image sequence number, and file extension
+            $new_name ="$product_id-$n.$ext";   // ex. 1-1.png, 1-2.png
             $image->save("$image_folder/$new_name");           
             $img_files[] = $new_name;
             $n++;
       }
 
       $img_file = implode(',', $img_files);
-      //แก้ไขชื่อไฟล์ในตาราง  
+      // update file name in the table
       $sql = "UPDATE product SET img_files = '$img_file' 
                   WHERE id = $product_id";
 
       $mysqli->query($sql);     
-      $msg = 'ข้อมูลถูกบันทึกแล้ว';
+      $msg = 'Data saved';
       $contextual = 'alert-success';
       
       end_post:             
@@ -136,42 +138,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $mysqli->close();     
 }
 ?>
-<h6 class="text-info text-center">เพิ่มรายการสินค้า</h6>
+<h6 class="text-info text-center">Add Product</h6>
 <div class="form-group mt-3">
-      <label>ชื่อสินค้า</label>
+      <label>Product Name</label>
       <input type="text" name="name" class="form-control form-control-sm" required>
 </div>
 <div class="form-group mt-2">
-      <label>รายละเอียด</label>
+      <label>Details</label>
       <textarea name="detail" class="form-control form-control-sm" rows="3" required></textarea>
 </div>
 <div class="d-flex justify-content-between flex-wrap">
       <div class="form-group mt-2">
-            <label>ราคา</label>
+            <label>Price</label>
             <input type="text" name="price" class="form-control form-control-sm w-auto" required>
       </div>
       <div class="form-group mt-2">
-            <label>คงเหลือ</label>
+            <label>Remain</label>
             <input type="text" name="remain" class="form-control form-control-sm w-auto" required>
       </div>
       <div class="form-group mt-2">
-            <label>ค่าจัดส่ง</label>
+            <label>Delivery cost</label>
             <input type="text" name="delivery_cost" class="form-control form-control-sm w-auto" required>
       </div>
 </div>
-<div class="mt-2 mb-2">ภาพสินค้า (1 - 4 ภาพ)</div>
+<div class="mt-2 mb-2">Product images (1 - 4 images)</div>
 <?php
-for ($i = 1; $i <= 4; $i++) {       //สร้างอินพุท file จำนวน 4 อัน
+for ($i = 1; $i <= 4; $i++) {       // create 4 file input file
       echo <<<HTML
       <div class="custom-file mb-2">
       <input type="file" name="upfile[]" class="custom-file-input" accept="image/*">
-      <label class="custom-file-label">เลือกไฟล์</label>
+      <label class="custom-file-label">Select File</label>
       </div>               
       HTML;
 }
 ?>
 </div>
-<button class="btn btn-primary btn-sm d-block mx-auto mt-4 px-5">ตกลง</button>
+<button class="btn btn-primary btn-sm d-block mx-auto mt-4 px-5">Confirm</button>
 <br><br><br><br>
 </form>
 

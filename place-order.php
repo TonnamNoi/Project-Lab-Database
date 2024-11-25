@@ -58,28 +58,27 @@ exit;
             $pment = $_POST['payment'];
             $status = 'pending,paid';
             $delivery = 'no,yes';
-            //นำข้อมูลจากฟอร์มที่ถูกส่งเข้ามา และข้อมูลอีกบางส่วนที่กำหนดค่าไว้ล่วงหน้า
-            //จัดเก็บลงในตาราง orders
+            // take data submitted from the form, along with some predefined information and store it into the "orders" table
             $mysqli = new mysqli('localhost', 'root', 'root', 'project1');
             $sql = 'INSERT INTO orders VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
             $stmt = $mysqli->stmt_init();
             $stmt->prepare($sql);
             $now = strtotime('now');
-            $d = date('Y-m-d'); //วันที่สั่งซื้อ(ปัจจุบัน)
+            $d = date('Y-m-d'); // order Date (Current)
             $param2 = [0, $mid, $fname, $lname, $address, $phone, $pment, 'pending', $d, '', $d, '', 'no'];
 
             $stmt->bind_param('iisssssssssss', ...$param2);
             $stmt->execute();
-            //อ่านรหัสการสังซื้อ เพื่อนำไปเก็บลงในตาราง orders_item
+            // retrieve order ID to store it in the "orders_item" table
             $order_id = $stmt->insert_id;
             $stmt->close();
 
-            //อ่านข้อมูลจากตาราง cart ที่ลูกค้ารายนั้นหยิบใส่รถเข็น
+            // retrieve data from "cart" table for the items that customer has added to their cart
             $sql = "SELECT * FROM cart
                         WHERE member_id = $mid";
 
             $result = $mysqli->query($sql);
-            //เก็บข้อมูลสินค้าแต่ละรายการลงในตาราง orders_item
+            // store data of each product item in the "orders_item" table.
             while ($cart = $result->fetch_object()) {
                   $pid = $cart->product_id;
                   $q = $cart->quantity;
@@ -88,7 +87,7 @@ exit;
 
                   $mysqli->query($sql);
             }
-            //ลบรายการสินค้าที่ลูกค้ารายนั้นหยิบใส่รถเข็นออกจากตาราง cart
+            // remove items that the customer has added to the cart from the "cart" table.
             $sql = "DELETE FROM cart WHERE member_id = $mid";
             $mysqli->query($sql);
             $mysqli->close();

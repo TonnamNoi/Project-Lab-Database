@@ -32,8 +32,8 @@
 <body class="px-3 pt-5">
    
 <?php             
-//ต้องคีย์เวิร์ดไปแสดงผลในช่องค้นหาบน navbar
-//ดังนั้นต้องอ่านคีย์เวิร์ดก่อนแสดง navbar
+// the keyword must be displayed in the search box on the navbar
+// that mean the keyword must be retrieved before rendering the navbar.
 $q = '';
 if (isset($_GET['q'])) {
       $q = $_GET['q'];
@@ -54,7 +54,7 @@ $sql = "SELECT * FROM product
 
 $result = $page->query($mysqli, $sql, 20);
 if ($mysqli->error || $result->num_rows == 0) {
-      echo '<h6 class="text-center text-danger">ไม่พบข้อมูล</h6>';
+      echo '<h6 class="text-center text-danger">Data not found</h6>';
       $mysqli->close();
       exit ('</div></body></html>');
 }
@@ -65,8 +65,8 @@ $total_rows = $page->total_rows();
 
 echo <<<HTML
 <p class="text-info text-center mb-3">
-ผลการค้นหาลำดับที่:  $start_row - $stop_row
-จากทั้งหมด: $total_rows</p>
+Search result number:  $start_row - $stop_row
+Out of a total: $total_rows</p>
 HTML;
 
 echo '<div class="card-deck mx-4 mt-5 justify-content-center">';

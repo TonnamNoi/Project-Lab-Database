@@ -4,7 +4,7 @@ $msg = '';
 $contextual = '';
 
 if (!isset($_SESSION['member_id'])) {
-      $msg = 'ลูกค้าต้องเข้าสู่ระบบก่อนหยิบสินค้าใส่รถเข็น';
+      $msg = 'Customers need to sign in before adding items to the cart';
       $contextual = 'alert-danger';
       goto end;
 }
@@ -21,10 +21,10 @@ if (isset($_POST['pro_id'])) {
       $stmt->execute();
       $aff_row = $stmt->affected_rows;
       if ($stmt->error || $aff_row == 0) {
-            $msg = 'เกิดข้อผิดพลาดในการหยิบสินค้าใส่รถเข็น';
-            $contextual = 'alert-danger';
+            $msg = 'Failed to add product to cart';
+            $contextual = 'alert-danger'; 
       } else {
-            $msg = 'หยิบสินค้าใส่รถเข็นเรียบร้อยแล้ว';
+            $msg = 'Product successfully added to cart';
             $contextual = 'alert-success';
       }
 }
@@ -39,3 +39,5 @@ echo <<<HTML
       <button class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 </div>             
 HTML;
+?>
+
