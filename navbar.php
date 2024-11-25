@@ -43,7 +43,7 @@ function is_active(...$file) {
                   <a href=# class="btn btn-sm btn-info dropdown-toggle" data-toggle="dropdown" style="max-width: 160px">$name</a>
                   <div class="dropdown-menu mt-2 bg-light" style="max-width: 300px">
                         <a class="dropdown-item w-auto" href="cart.php">Inspect cart and place order</a>
-                        <a class="dropdown-item w-auto" href="member-order-list.php">Purchase history and payment notice</a>
+                        <a class="dropdown-item w-auto" href="member-order-list.php">Order history and payment notice</a>
                         <a class="dropdown-item" href="#">Favorite</a>    
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="member-signin.php">Personal Information</a>              
@@ -77,7 +77,7 @@ function is_active(...$file) {
 
 <script>    
 // navbar and cart button will appear on every page, when opening any page need to update number of items in cart and display it again each time
-// this function will send a request to fetch number of items added to the cart so the number can be displayed on the button in the Navbar.
+// this function will send a request to fetch number of items added to the cart so the number can be displayed on the button in the Navbar
 function updateCart() {
      $.ajax({
            url: 'ajax-update-cart.php', 

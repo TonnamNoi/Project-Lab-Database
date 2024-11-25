@@ -68,8 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 <h6 class="mb-3 text-center text-info">Member sign-in</h6>
-<input type="email" name="email" placeholder="อีเมล" class="form-control form-control-sm mb-3" required>
-<input type="password" name="pswd" placeholder="รหัสผ่าน"  class="form-control form-control-sm mb-4" required>   
+<input type="email" name="email" placeholder="Email" class="form-control form-control-sm mb-3" required>
+<input type="password" name="pswd" placeholder="Password"  class="form-control form-control-sm mb-4" required>   
 <button type="submit" class="btn btn-sm btn-primary d-block mx-auto mb-4 w-50">Sign in</button>
 <a href="member-signup.php" class="btn btn-sm btn-info d-block mx-auto w-50">Register</a>
 </form>
