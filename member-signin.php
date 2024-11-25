@@ -24,7 +24,7 @@ if (isset($_SESSION['member_id'])) {
       echo <<<HTML
       <h6 class="mb-4 text-center text-info">For members</h6>
       <a href="cart.php" class="btn bt-sm btn-info d-block w-75 mb-2 mx-auto">Inspect cart and place order</a>
-      <a href="member-order-list.php" class="btn bt-sm btn-secondary d-block w-75 mb-2 mx-auto">Purchase history and payment notice</a>
+      <a href="member-order-list.php" class="btn bt-sm btn-secondary d-block w-75 mb-2 mx-auto">Order history and payment notice</a>
       <a href="#" class="btn bt-sm btn-success d-block w-75 mb-2 mx-auto">Favorite</a><br>
       <a href="#" class="btn bt-sm btn-secondary d-block w-75 mb-2 mx-auto">Update member details</a>
       <a href="member-signout.php" class="btn bt-sm btn-danger d-block w-75 mb-2 mx-auto">Sign out</a>

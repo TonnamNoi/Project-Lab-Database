@@ -94,15 +94,13 @@ exit;
 
             ?>
 
-            <h6 class="text-info text-center my-4">การสั่งซื้อเสร็จเรียบร้อย</h6>
+            <h6 class="text-info text-center my-4">Order completed</h6>
             <p class="">
-                  การตรวจสอบข้อมูลต่างๆ เกี่ยวกับการสั่งซื้อสินค้าของท่าน
-                  เช่น แจ้งโอนเงิน, สถานะการโอนเงิน หรือการจัดส่ง
-                  โดยล็อกอินเข้าสู่ระบบแล้วเลือกที่เมนู "ประวัติการสั่งซื้อและแจ้งชำระเงิน"
+                  To check various details about your order, such as payment confirmation, payment status, or delivery status, please log in and select the 'Order history and payment notice' menu
             </p>
-            <div class="mt-4 mb-3 text-center">ขอขอบพระคุณที่สั่งซื้อสินค้าจากเรา</div>
+            <div class="mt-4 mb-3 text-center">Thank you for shopping with us</div>
             <div class="text-center mt-4">
-                  <a href="index.php" class="btn btn-primary btn-sm px-4">กลับไป Shopping ต่อ</a>
+                  <a href="index.php" class="btn btn-primary btn-sm px-4">Continue Shopping</a>
             </div>
 
             <br><br><br><br>

@@ -73,16 +73,16 @@ $m = $result->fetch_object();
 <textarea name="address" rows="3" class="form-control form-control-sm mb-2" placeholder="Address" required><?= $m->address ?></textarea>
 <input type="text" name="phone" placeholder="Phone No."  class="form-control form-control-sm" value="<?= $m->phone ?>" required>
 
-            <span class="mt-4 mb-2 d-block text-success">วิธีการชำระเงิน</span>
+            <span class="mt-4 mb-2 d-block text-success">Payment</span>
             <div class="custom-control custom-radio">
                   <input type="radio" class="custom-control-input"
                         id="radio1" name="payment" value="cod" checked>
-                  <label class="custom-control-label" for="radio1">ชำระเงินปลายทาง</label>
+                  <label class="custom-control-label" for="radio1">Cash on delivery(COD)</label>
             </div>
             <div class="custom-control custom-radio">
                   <input type="radio" class="custom-control-input"
                         id="radio2" name="payment" value="bank_transfer">
-                  <label class="custom-control-label" for="radio2">โอนผ่านธนาคาร/ATM</label>
+                  <label class="custom-control-label" for="radio2">Transfer via Bank/ATM</label>
             </div>
 
             <div class="text-center mt-4">
