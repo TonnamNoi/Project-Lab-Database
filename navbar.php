@@ -10,15 +10,18 @@ function is_active(...$file) {
       return '';
 }
 ?>
+
+
+
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg fixed-top py-0 pr-2" style="background-color: #0D1821;">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler">
-            <span class="navbar-toggler-icon"></span>
+<nav class="navbar navbar-expand-lg fixed-top py-0 pr-2 navbar-light bg-dark">
+      <button class="navbar-toggler bg-white" type="button" data-toggle="collapse" data-target="#navbarToggler">
+            <span class="navbar-toggler-icon custom-toggler-icon"></span>
       </button>    
 
       <div class="navbar-brand text-light">
             <i class="fa fa-shopping-bag fa-1x mr-2 d-none d-lg-inline"></i>
-            <a href="index.php" class="navbar-brand text-light" style="text-decoration: none; font-weight: bold;">Simple Store</a>
+            <a href="index.php" class="navbar-brand text-light ml-3" style="text-decoration: none; font-weight: bold;">Simple Store</a>
       </div>
 
       <div class="collapse navbar-collapse" id="navbarToggler">
@@ -42,7 +45,7 @@ function is_active(...$file) {
       <?php
       @session_start();
       if (!isset($_SESSION['member_name'])) {
-            echo  '<a href="member-signin.php" class="btn btn-sm text-white" style="background-color: #1B9988;">Sign In</a>';
+            echo  '<a href="member-signin.php" class="btn btn-sm text-white" style="background-color: #1B9988; display: flex;margin-right: 5px;">Sign In</a>';
       } else {
             $name = mb_substr($_SESSION['member_name'], 0, 16);
 
