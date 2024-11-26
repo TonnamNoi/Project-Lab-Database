@@ -14,7 +14,7 @@ if (!isset($_SESSION['member_id'])) {
             html,
             body {
                   background: azure;
-                  min-height: 100vh;
+                  min-height: 100px;
                   display: flex;
                   align-items: center;
                   justify-content: center;
@@ -26,6 +26,7 @@ if (!isset($_SESSION['member_id'])) {
                   background: #FFFF;
                   border: 2px solid #0D1821; /* Defines border width, style, and color */
                   border-radius: 10px;
+                  
             }
 
             .cart {

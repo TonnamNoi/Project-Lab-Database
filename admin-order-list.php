@@ -16,9 +16,13 @@ if (!isset($_SESSION['admin'])) {
                   font-size: 0.93rem;
             }
 
+            html,
             body {
-                  background-color: #f8f9fa;
-                  font-family: Arial, sans-serif;
+                  background: azure;
+                  min-height: 100vh;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
             }
 
             /* Main container */
@@ -27,7 +31,8 @@ if (!isset($_SESSION['admin'])) {
                   min-width: 400px;
                   background-color: white;
                   padding: 20px;
-                  border-radius: 8px;
+                  border: 2px solid #0D1821;
+                  border-radius: 10px;
                   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
 
