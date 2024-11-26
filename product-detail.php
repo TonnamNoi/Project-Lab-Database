@@ -2,11 +2,21 @@
 <!DOCTYPE html>
 <html>
 
+<!-- <link rel="stylesheet" href="style.css"> -->
+
 <head>
       <?php require 'head.php'; ?>
       <link href="js/unite-gallery/css/unite-gallery.css" rel="stylesheet">
       <!-- <link href="js/unite-gallery/themes/compact/ug-theme-compact.css" rel="stylesheet"> -->
       <style>
+            html,
+            body {
+                  background: azure;
+                  min-height: 100vh;
+                  align-items: center;
+                  justify-content: center;
+            }
+
             div#main-container {
                   max-width: 800px;
                   min-width: 400px;
@@ -79,7 +89,7 @@
 
             if ($mysqli->error || $result->num_rows == 0) {
                   $mysqli->close();
-                  echo '<h6 class="text-danger text-center mb-4">ไม่พบข้อมูล</h6>';
+                  echo '<h6 class="text-danger text-center mb-4">Product not found</h6>';
                   include 'recently-viewed.php';
                   include 'footer.php';
                   exit('</div></body></html>');
@@ -137,7 +147,7 @@
       </div>     <!-- /container -->
 
       HTML;
-      require 'footer.php'; 
+            require 'footer.php';
             // store some info about this product for displaying Recently Viewed
             // the info includes product image (use first image) and the name (first 15) then create a link and store it in the session.
             $url = $_SERVER['PHP_SELF'] .  '?' . $_SERVER['QUERY_STRING'];
@@ -152,8 +162,8 @@
 
                         <div class="text-info mt-2 small">$n</div>
                         LINK;
-            
-                        // check if the session has been created to store the data if not create an empty array for it
+
+            // check if the session has been created to store the data if not create an empty array for it
             if (!isset($_SESSION['recently_viewed'])) {
                   $_SESSION['recently_viewed'] = [];
             }
@@ -168,7 +178,7 @@
             ?>
       </div>
 
-      <br><br><br><br>
+      <!-- <br><br><br><br> -->
       <?php require 'footer.php'; ?>
 </body>
 

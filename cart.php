@@ -11,9 +11,28 @@ if (!isset($_SESSION['member_id'])) {
 <head>
       <?php require 'head.php'; ?>
       <style>
+            html,
+            body {
+                  background: azure;
+                  min-height: 100vh;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+            }
+
             div.main-container {
                   max-width: 600px;
                   min-width: 450px;
+                  background: #1B998B;
+                  border-radius: 10px;
+            }
+
+            .cart {
+                  color: #0D1821;
+            }
+
+            a {
+                  color: #0D1821;
             }
 
             img.product {
@@ -92,7 +111,7 @@ SQL;
                         exit('</form></div></body></html>');
                   }
 
-                  echo '<h6 class="text-info mb-4 text-center">Cart items</h6>';
+                  echo '<h6 class="mb-4 text-center" style="color: #0D1821">Cart items</h6>';
                   echo '<div class="container">';
 
                   $grand_total = 0;

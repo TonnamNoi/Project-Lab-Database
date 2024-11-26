@@ -16,6 +16,13 @@
                   min-width: 270px;
                   max-width: 350px;
             }
+
+            /* Adding space below the form for recently viewed */
+            .recently-viewed-container {
+                  margin-top: 30px;
+                  padding-top: 20px;
+                  padding-bottom: 20px;
+            }
       </style>
 </head>
 
@@ -26,20 +33,21 @@
             <?php
             if (isset($_SESSION['member_id'])) {
                   echo <<<HTML
-      <h6 class="mb-4 text-center text-info">For members</h6>
-      <a href="cart.php" class="btn bt-sm btn-info d-block w-75 mb-2 mx-auto">Inspect cart and place order</a>
-      <a href="member-order-list.php" class="btn bt-sm btn-secondary d-block w-75 mb-2 mx-auto">Order history and payment notice</a>
-      <a href="#" class="btn bt-sm btn-success d-block w-75 mb-2 mx-auto">Favorite</a><br>
-      <a href="#" class="btn bt-sm btn-secondary d-block w-75 mb-2 mx-auto">Update member details</a>
-      <a href="member-signout.php" class="btn bt-sm btn-danger d-block w-75 mb-2 mx-auto">Sign out</a>
-      HTML;
+            <h6 class="mb-4 text-center text-info">For members</h6>
+            <a href="cart.php" class="btn bt-sm btn-info d-block w-75 mb-2 mx-auto">Inspect cart and place order</a>
+            <a href="member-order-list.php" class="btn bt-sm btn-secondary d-block w-75 mb-2 mx-auto">Order history and payment notice</a>
+            <a href="#" class="btn bt-sm btn-success d-block w-75 mb-2 mx-auto">Favorite</a><br>
+            <a href="update-member-detail.php" class="btn bt-sm btn-secondary d-block w-75 mb-2 mx-auto">Update member details</a>
+            <a href="update-password.php" class="btn bt-sm btn-secondary d-block w-75 mb-2 mx-auto">Update Password</a>
+            <a href="member-signout.php" class="btn bt-sm btn-danger d-block w-75 mb-2 mx-auto">Sign out</a>
+            HTML;
 
-                  include 'recently-viewed.php';
+                  include 'recently-viewed.php';  // Including recently viewed products here
                   echo '<br><br><br><br>';
                   include 'footer.php';
                   exit('</form></body></html>');
             }
-            // if POST retrive data
+            // if POST retrieve data
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                   $email = $_POST['email'];
                   $pswd = $_POST['pswd'];
@@ -56,7 +64,7 @@
 
                   if ($num_rows == 1) {
                         $data = $result->fetch_object();
-                        //verify password
+                        // verify password
                         if (password_verify($pswd, $data->password)) {
                               // Password is correct
                               $_SESSION['member_id'] = $data->id;
@@ -67,33 +75,36 @@
                         } else {
                               // Password is incorrect
                               echo <<<HTML
-                                    <div class="alert alert-danger mb-4" role="alert">
-                                          Password Incorrect
-                                          <button class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                    </div>     
-                                    HTML;
+                        <div class="alert alert-danger mb-4" role="alert">
+                            Password Incorrect
+                            <button class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        </div>     
+                        HTML;
                         }
                   } else {
                         // Email does not exist in the database
                         echo <<<HTML
-                        <div class="alert alert-danger mb-4" role="alert">
-                              Invalid email and password
-                              <button class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        </div>     
-                        HTML;
+                <div class="alert alert-danger mb-4" role="alert">
+                    Invalid email and password
+                    <button class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                </div>     
+                HTML;
                   }
 
                   $stmt->close();
                   $mysqli->close();
             }
             ?>
+
             <h6 class="mb-3 text-center text-info">Member sign-in</h6>
             <input type="email" name="email" placeholder="Email" class="form-control form-control-sm mb-3" required>
             <input type="password" name="pswd" placeholder="Password" class="form-control form-control-sm mb-4" required>
             <button type="submit" class="btn btn-sm btn-primary d-block mx-auto mb-4 w-50">Sign in</button>
             <a href="member-signup.php" class="btn btn-sm btn-info d-block mx-auto w-50">Register</a>
-      </form>
+            
 
+            <!-- Recently viewed products section -->
+      </form>
       <?php require 'footer.php'; ?>
 </body>
 

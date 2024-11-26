@@ -3,7 +3,12 @@
 
 // Check if user is logged in (assumed that 'user_id' exists in the session)
 if (!isset($_SESSION['member_id'])) {
-    echo "<p>Please log in to see your recently viewed products.</p>";
+    echo <<<HTML
+    <hr>
+    <div class="mt-4 mb-4 text-center">
+        <h6 class="text-secondary">Please log in to see your recently viewed products.</h6>
+        <div class="d-flex mt-3 justify-content-center">
+    HTML;
     exit();
 }
 
@@ -22,7 +27,7 @@ if (isset($_SESSION['recently_viewed']) && !empty($_SESSION['recently_viewed']))
     foreach ($_SESSION['recently_viewed'] as $product_id) {
         echo <<<HTML
         <div class="d-flex flex-column justify-content-between border p-2 mr-2 text-center" style="max-width:100px;">
-            $product_id
+            Product ID: $product_id
         </div>
         HTML;
 

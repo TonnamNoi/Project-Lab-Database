@@ -1,0 +1,34 @@
+
+/* General layout */
+html, body {
+    background: azure;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h3 {
+    color: #17a2b8; /* Primary color */
+    font-size: 1.5rem;
+}
+
+/* Form Styling */
+.form-control {
+    border-radius: 5px;
+}
+
+button[type="submit"], .btn-secondary {
+    background-color: #17a2b8; /* Matches navbar color */
+    border-color: #17a2b8;
+    color: white;
+}
+
+button[type="submit"]:hover, .btn-secondary:hover {
+    background-color: #138496; /* Darker shade for hover effect */
+    border-color: #138496;
+}
+
+.alert {
+    margin-bottom: 20px;
+}
