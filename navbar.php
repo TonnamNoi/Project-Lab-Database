@@ -50,8 +50,8 @@ function is_active(...$file) {
             $name = mb_substr($_SESSION['member_name'], 0, 16);
 
             echo <<<HTML
-            <div class="dropdown d-inline">
-                  <a href="#" class="btn btn-sm dropdown-toggle text-white" data-toggle="dropdown" style="background-color: #1B9988; max-width: 160px;">$name</a>
+            <div class="dropdown d-inline mr-2">
+                  <a href="#" class="btn btn-sm dropdown-toggle text-white" data-toggle="dropdown" style="background-color: #1B9988; max-width: 160px; ">$name</a>
                   <div class="dropdown-menu mt-2 bg-light" style="max-width: 300px">
                         <a class="dropdown-item w-auto" href="cart.php">Inspect cart and place order</a>
                         <a class="dropdown-item w-auto" href="member-order-list.php">Order history and payment notice</a>
