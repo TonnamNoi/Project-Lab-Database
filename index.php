@@ -73,6 +73,7 @@ $mysqli->close();
 ?>
 </div>  <!-- card -->
 <br>
+<?php require 'footer.php'; ?>     
 
 <?php 
  if ($page->total_pages() > 1) {
@@ -84,6 +85,6 @@ include 'recently-viewed.php';
 
 </div>  <!-- main-container -->
 <br><br><br><br>
-<?php require 'footer.php'; ?>     
+
 </body>
 </html>
