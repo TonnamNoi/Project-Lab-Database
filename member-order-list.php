@@ -10,6 +10,13 @@ if (!isset($_SESSION['member_id'])) {
 <head>
       <?php require 'head.php'; ?>
       <style>
+            html,
+            body {
+                  width: 100%;
+                  height: 100%;
+                  background: azure;
+            }
+
             div.main-container {
                 max-width: 800px;
                 min-width: 600px;

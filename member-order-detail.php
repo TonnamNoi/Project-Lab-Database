@@ -15,6 +15,13 @@ if (!isset($_GET['id'])) {
 <head>
       <?php require 'head.php'; ?>
       <style>
+            html,
+            body {
+                  width: 100%;
+                  height: 100%;
+                  background: azure;
+            }
+
             div.main-container {
                 max-width: 600px;
                 min-width: 450px;
@@ -36,7 +43,7 @@ if (!isset($_GET['id'])) {
       <script>
       $(function() {
             $('a#cancel').click(function() {
-                  if (confirm('Confirm your purchase?')) {
+                  if (confirm('Confirm to cancel this order?')) {
                          $('#form-cancel').submit();
                   }
             });
