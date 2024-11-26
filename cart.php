@@ -23,7 +23,8 @@ if (!isset($_SESSION['member_id'])) {
             div.main-container {
                   max-width: 600px;
                   min-width: 450px;
-                  background: #1B998B;
+                  background: #FFFF;
+                  border: 2px solid #0D1821; /* Defines border width, style, and color */
                   border-radius: 10px;
             }
 
