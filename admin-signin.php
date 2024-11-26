@@ -22,7 +22,7 @@
 <form id="main-form" method="post" class="m-auto pt-4">
 <?php     
 // Database connection
-$mysqli = new mysqli('localhost', 'root', 'root', 'project1(tonnam)');
+$mysqli = new mysqli('localhost', 'root', 'root', 'project1');
 
 // Check the connection
 if ($mysqli->connect_error) {

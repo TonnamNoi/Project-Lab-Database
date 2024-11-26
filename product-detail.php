@@ -106,51 +106,54 @@
             $cart_class = ($p->remain > 0) ? 'btn-primary' : 'btn-secondary disabled';
             $price = number_format($p->price);
             echo <<<HTML
-<div class="container"> <!-- grid -->
-<div class="row">
-<div class="col-12 col-md-6 mt-3">
-      <div id="unite-gallery" style="display: none">
-            $img_tags
-      </div>
-</div>
-<div class="col-12 col-md-6 d-flex flex-column justify-content-between">
-      <div>
-            <h6 class="text-success my-3">$p->name</h6>
-            <p>Price: $price THB</p>
-            $r
-      </div>
-      <div class="mt-2 mt-md-0">
-            <a href="#" id="add-cart" class="btn btn-sm $cart_class mb-2" data-id="$p->id">
-                  <i class="fa fa-cart-plus mr-1"></i> Add to cart
-            </a><br>
-            <a href="#" id="wishlist" class="btn btn-sm btn-info">
-                  <i class="fa fa-heart mr-1"></i> Favorite
-            </a>
-      </div>
-</div>                 
-</div>     <!-- /row -->
+            <div class="container"> <!-- grid -->
+                  <div class="row">
+                        <div class="col-12 col-md-6 mt-3">
+                              <div id="unite-gallery" style="display: none">
+                                    $img_tags
+                              </div>
+                        </div>
+                        <div class="col-12 col-md-6 d-flex flex-column justify-content-between">
+                              <div>
+                                    <h6 class="text-success my-3">$p->name</h6>
+                                    <p>Price: $price THB</p>
+                                    $r
+                              </div>
+                              <div class="mt-2 mt-md-0">
+                                    <a href="#" id="add-cart" class="btn btn-sm $cart_class mb-2" data-id="$p->id">
+                                          <i class="fa fa-cart-plus mr-1"></i> Add to cart
+                                    </a><br>
+                                    <a href="#" id="wishlist" class="btn btn-sm btn-info">
+                                          <i class="fa fa-heart mr-1"></i> Favorite
+                                    </a>
+                              </div>
+                  </div>                 
+            </div>     <!-- /row -->
 
-<div class="row mt-2 mt-md-4">
-      <div class="col-12">$p->detail</div>
-</div>
+            <div class="row mt-2 mt-md-4">
+                  <div class="col-12">$p->detail</div>
+            </div>
 
-</div>     <!-- /container -->            
-HTML;
+      </div>     <!-- /container -->
 
+      HTML;
+      require 'footer.php'; 
             // store some info about this product for displaying Recently Viewed
             // the info includes product image (use first image) and the name (first 15) then create a link and store it in the session.
             $url = $_SERVER['PHP_SELF'] .  '?' . $_SERVER['QUERY_STRING'];
             $img_src = $img_files[0];
             $n = mb_substr($p->name, 0, 15);
             $link = <<<LINK
-<div>       
-<a href="$url">
-      <img src="product-images/$product_id/$img_src" style="max-width:60px;max-height:60px">
-</a>
-</div>
-<div class="text-info mt-2 small">$n</div>
-LINK;
-            // check if the session has been created to store the data if not create an empty array for it
+                        <div>       
+                        <a href="$url">
+                              <img src="product-images/$product_id/$img_src" style="max-width:60px;max-height:60px">
+                        </a>
+                        </div>
+
+                        <div class="text-info mt-2 small">$n</div>
+                        LINK;
+            
+                        // check if the session has been created to store the data if not create an empty array for it
             if (!isset($_SESSION['recently_viewed'])) {
                   $_SESSION['recently_viewed'] = [];
             }
