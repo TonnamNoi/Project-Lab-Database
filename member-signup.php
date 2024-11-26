@@ -1,4 +1,7 @@
-<?php 
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 @session_start();
 if (isset($_SESSION['member_id'])) {
       header('location: member-signin.php');
@@ -50,12 +53,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $address = $_POST['address'];
       $phone = $_POST['phone'];
 
+      // Hash the password
+      $hashedPassword = password_hash($pswd, PASSWORD_DEFAULT);
+      $emailHash = hash('sha256', $email);
+
       // store data in table
       $mysqli = new mysqli('localhost', 'root', 'root', 'project1');
       $sql = 'INSERT INTO member VALUES (?, ?, ?, ?, ?, ?, ?)';
       $stmt = $mysqli->stmt_init();
       $stmt->prepare($sql);
-      $p = [0, $email, $pswd, $fname, $lname, $address, $phone];
+      $p = [0, $emailHash, $hashedPassword, $fname, $lname, $address, $phone];
       $stmt->bind_param('issssss', ...$p);
       $stmt->execute();
 
