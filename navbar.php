@@ -15,13 +15,13 @@ function is_active(...$file) {
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg fixed-top py-0 pr-2 navbar-light bg-dark">
-      <button class="navbar-toggler bg-white" type="button" data-toggle="collapse" data-target="#navbarToggler">
+      <button class="navbar-toggler btn btn-m bg-white" type="button" data-toggle="collapse" data-target="#navbarToggler">
             <span class="navbar-toggler-icon custom-toggler-icon"></span>
       </button>    
 
       <div class="navbar-brand text-light">
             <i class="fa fa-shopping-bag fa-1x mr-2 d-none d-lg-inline"></i>
-            <a href="index.php" class="navbar-brand text-light ml-3" style="text-decoration: none; font-weight: bold;">Simple Store</a>
+            <a href="index.php" class="navbar-brand text-light ml-2" style="text-decoration: none; font-weight: bold;">Simple Store</a>
       </div>
 
       <div class="collapse navbar-collapse" id="navbarToggler">
