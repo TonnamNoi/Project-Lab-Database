@@ -146,7 +146,7 @@ SQL;
                                     </a>
                               </div>
                         </div>
-                        <div class="">$st</div>
+                        <div class="col-7 col-md-9 text-right">$st</div>
                   </div>      <!-- d-flex --> 
               </div>          <!-- col-10 -->
        </div>                 <!-- row -->
@@ -160,16 +160,16 @@ SQL;
 
                   echo <<<HTML
 <div class="row py-3">
-      <div class="col-7 col-md-9 text-center">
+      <div class="col-7 col-md-9 text-right">
             Total delivery cost :
       </div>
-      <div class="col-5 col-md-3 text-right">$f_dvr_cost</div>
+      <div class="col-5 col-md-3 text-center">$f_dvr_cost</div>
 </div>
 <div class="row py-3">
-      <div class="col-7 col-md-9 text-center">
+      <div class="col-7 col-md-9 text-right">
             Total cost :
       </div>
-      <div class="col-5 col-md-3 text-right">$gt</div>
+      <div class="col-5 col-md-3 text-center">$gt</div>
 </div>
 <div class="row py-3">
       <div class="col-7 col-md-9 text-center">
