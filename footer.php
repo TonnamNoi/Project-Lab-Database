@@ -26,7 +26,7 @@
     if (isset($_SESSION['admin'])) {
         echo <<<HTML
         <div class="dropup d-inline">
-            <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" style="background-color: #C5D86D; color: #1B998B;">
+            <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" style="background-color: #C5D86D; color: black;">
                   Admin
             </button>
             <div class="dropdown-menu">
@@ -37,7 +37,7 @@
         </div>
         HTML;
     } else {
-        echo '<a href="admin-signin.php" style="font-weight: bold; color: #0D1821;">Admin</a>';
+        echo '<a href="admin-signin.php" style="font-weight: bold; color: black;">Admin</a>';
     }
     ?>
 </footer>
