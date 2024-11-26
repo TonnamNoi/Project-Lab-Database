@@ -140,13 +140,13 @@ SQL;
                   echo <<<HTML
 <div class="row py-3">
       <div class="col-7 col-md-9 text-center">
-            Total delivery cost
+            Total delivery cost :
       </div>
       <div class="col-5 col-md-3 text-right">$f_dvr_cost</div>
 </div>
 <div class="row py-3">
       <div class="col-7 col-md-9 text-center">
-            Total amount
+            Total cost :
       </div>
       <div class="col-5 col-md-3 text-right">$gt</div>
 </div>
