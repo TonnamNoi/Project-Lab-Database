@@ -1,4 +1,7 @@
 <?php
+
+// Decrypt the admin password back, show it, and update it into "admin" table
+
 // Enable error reporting to debug any issues
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
