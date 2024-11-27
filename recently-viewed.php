@@ -27,7 +27,7 @@ if (isset($_SESSION['recently_viewed']) && !empty($_SESSION['recently_viewed']))
     foreach ($_SESSION['recently_viewed'] as $product_id) {
         echo <<<HTML
         <div class="d-flex flex-column justify-content-between border p-2 mr-2 text-center" style="max-width:100px;">
-            Product ID: $product_id
+            $product_id
         </div>
         HTML;
 
