@@ -44,5 +44,10 @@ if (isset($_SESSION['recently_viewed']) && !empty($_SESSION['recently_viewed']))
 
 } else {
     // If there are no recently viewed products
-    echo "<p>No recently viewed products.</p>";
+    echo <<<HTML
+    <hr>
+    <div class="mt-4 mb-4 text-center">
+        <h6 class="text-secondary">No recently viewed products.</h6>
+        <div class="d-flex mt-3 justify-content-center">
+    HTML;
 }
