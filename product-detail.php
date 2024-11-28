@@ -2,8 +2,6 @@
 <!DOCTYPE html>
 <html>
 
-<!-- <link rel="stylesheet" href="style.css"> -->
-
 <head>
       <?php require 'head.php'; ?>
       <link href="js/unite-gallery/css/unite-gallery.css" rel="stylesheet">

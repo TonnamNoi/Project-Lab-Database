@@ -7,7 +7,7 @@ if (!isset($_SESSION['admin'])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="style.css">
+
 <head>
       <?php require 'head.php'; ?>
       <style>
